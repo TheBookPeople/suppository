@@ -1,6 +1,7 @@
 require 'rubygems'
 require 'spec_helper'
 require 'suppository/create_repository'
+require 'suppository/repository'
 
 describe Suppository::CreateRepository do
 
@@ -8,10 +9,8 @@ describe Suppository::CreateRepository do
 
   before(:each) do
     IO.any_instance.stub(:puts)
-    @creator = Suppository::CreateRepository.new("/tmp/repo123/")
-    @repository = "/tmp/repo123/"
-    @dists = ['natty','lucid', 'precise', 'soucy', 'trusty']
-    @archs = ['amd64','i386']
+    @repository = Suppository::Repository.new("/tmp/repo123/")
+    @creator = Suppository::CreateRepository.new(@repository)
   end
 
   it "can create new repository" do
@@ -21,7 +20,8 @@ describe Suppository::CreateRepository do
 
   it "can create new repository at diffrent location" do
     STDOUT.should_receive(:puts).with("Creating new Repository @ /tmp/repo321")
-    creator = Suppository::CreateRepository.new("/tmp/repo321")
+    repository = Suppository::Repository.new("/tmp/repo321")
+    creator = Suppository::CreateRepository.new(repository)
     creator.run
   end
 
@@ -32,19 +32,19 @@ describe Suppository::CreateRepository do
 
   it "creates a .supository file" do
     @creator.run
-    File.directory?("/tmp/repo123/.supository").should be_true
+    File.directory?(@repository.suppository).should be_true
   end
 
   it "aborts if file supository already exists" do
-    FileUtils.mkdir_p "#{@repository}/.supository"
-    get_exception{@creator.run}.should eql "#{@repository} is already a repository"
+    FileUtils.mkdir_p @repository.suppository
+    get_exception{@creator.run}.should eql "#{@repository.path} is already a repository"
   end
 
   it "creates folder structure" do
     @creator.run
-    @dists.each do |dist|
-      @archs.each do |arch|
-        File.directory?("#{@repository}/dists/#{dist}/internal/binary-#{arch}").should be_true
+    @repository.dists.each do |dist|
+      @repository.archs.each do |arch|
+        File.directory?("#{@repository.path}/dists/#{dist}/internal/binary-#{arch}").should be_true
       end
     end
 

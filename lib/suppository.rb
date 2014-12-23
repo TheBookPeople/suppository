@@ -1,4 +1,4 @@
-require "suppository/version"
+require 'suppository/version'
 
 module Suppository
   # Your code goes here...

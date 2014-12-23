@@ -27,5 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency 'rb-fsevent' 
   spec.add_development_dependency 'rb-fchange', '0.0.6' 
   spec.add_development_dependency 'terminal-notifier-guard', '1.5.3'
+  spec.add_development_dependency 'ruby-lint'
+  spec.add_development_dependency 'rubocop'
+  spec.add_development_dependency 'fakefs', '0.5.2'
   
 end

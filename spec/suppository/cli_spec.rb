@@ -2,7 +2,9 @@ require 'rubygems'
 require 'spec_helper'
 require 'suppository/version'
 require 'suppository/cli'
+require 'suppository/repository'
 require 'suppository/create_repository'
+require 'suppository/add_package'
 
 describe Suppository::CLI do
   

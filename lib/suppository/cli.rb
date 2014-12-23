@@ -9,17 +9,22 @@ module Suppository
       end
       
       if args.first == 'create'
-        repository = Suppository::Repository.new(args[1])
-        Suppository::CreateRepository.new(repository).run
+        Suppository::CreateRepository.new(repository(args[1])).run
         return
       end
       
       if args.first == 'add'
-        repository = Suppository::Repository.new(args[1])
-        Suppository::AddPackage.new(repository, args[2]).run
+        Suppository::AddPackage.new(repository(args[1]), args[2]).run
         return
       end
       
     end
+    
+    private
+    
+    def self.repository(path)
+      Suppository::Repository.new(path)
+    end
+    
   end
 end

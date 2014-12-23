@@ -6,7 +6,7 @@ module Suppository
 
     def run
       assert_not_created
-      create_folders
+      create_repository
     end
 
     private
@@ -15,7 +15,7 @@ module Suppository
       File.exist?(suppository) ? fail("#{path} is already a repository") : ''
     end
 
-    def create_folders
+    def create_repository
       puts "Creating new Repository @ #{path}"
       FileUtils.mkdir_p "#{suppository}"
       create_dists_folders

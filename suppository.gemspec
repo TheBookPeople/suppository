@@ -8,10 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = Suppository::VERSION
   spec.authors       = ["William Griffiths"]
   spec.email         = ["william.griffiths@thebookpeople.co.uk"]
-  spec.summary       = %q{TODO: Write a short summary. Required.}
-  spec.description   = %q{TODO: Write a longer description. Optional.}
+  spec.summary       = %q{Super Simple Apt Repository Manager}
+  spec.description   = %q{A utility for creating and managing simple apt repositories.}
   spec.homepage      = ""
-  spec.license       = "MIT"
+  spec.license       = "GNU"
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }

@@ -8,7 +8,6 @@ describe Suppository::AddPackage do
 
 
   before(:each) do
-    IO.any_instance.stub(:puts)
     @repository = Suppository::Repository.new("/tmp/supposotory_test_#{Time.now.to_f}")
     Suppository::CreateRepository.new(@repository).run
     test_deb = File.expand_path(File.dirname(__FILE__)+"../../../fixtures/mock_software.deb")
@@ -22,8 +21,7 @@ describe Suppository::AddPackage do
 
   it "can add a package to the supposotory" do  
     @adder.run
-    puts "#{@repository.suppository}/mock_software.deb"
-    File.file?("#{@repository.suppository}/mock_software.deb").should be_true
+    expect(File.file?("#{@repository.suppository}/mock_software.deb")).to be_truthy
   end
 
 

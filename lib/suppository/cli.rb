@@ -4,7 +4,7 @@ module Suppository
   class CLI
     def self.run(args)
       if args.first == 'version'
-        puts "Subository Version #{Suppository::VERSION}"
+        puts "Suppository Version #{Suppository::VERSION}"
         return
       end
       Suppository::CreateRepository.new(args[1]).run

@@ -6,14 +6,14 @@ require 'suppository/create_repository'
 
 describe Suppository::CLI do
   
-  before(:each) do
-    IO.any_instance.stub(:puts)
+  it "shows current version" do    
+    expect{Suppository::CLI.run(["version"])}.to output("Suppository Version 0.0.1\n").to_stdout   
   end
   
   it "can create new repository" do    
     creator = double(Suppository::CreateRepository)
-    Suppository::CreateRepository.should_receive(:new).with("/tmp/repo123") {creator}
-    creator.should_receive(:run)
+    expect(Suppository::CreateRepository).to receive(:new).with("/tmp/repo123") {creator}
+    expect(creator).to receive(:run)
     Suppository::CLI.run(["create", "/tmp/repo123"])
   end
   

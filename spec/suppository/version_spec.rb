@@ -5,7 +5,7 @@ require 'suppository/version'
 describe Suppository do
   
   it "has a version number" do
-    Suppository::VERSION.length.should be > 0
+    expect(Suppository::VERSION.length).to be > 0
   end
   
 end

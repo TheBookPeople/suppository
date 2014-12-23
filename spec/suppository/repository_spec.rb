@@ -5,7 +5,6 @@ require 'suppository/repository'
 describe Suppository::Repository do
 
   before(:each) do
-    IO.any_instance.stub(:puts)
     @repository = Suppository::Repository.new("/tmp/repo123")
     @dists = ['natty','lucid', 'precise', 'soucy', 'trusty']
     @archs = ['amd64','i386']
@@ -13,19 +12,19 @@ describe Suppository::Repository do
   end
 
   it "has a path" do
-    @repository.path.should eql "/tmp/repo123"
+    expect(@repository.path).to eql "/tmp/repo123"
   end
   
   it "has a dists" do
-    @repository.dists.should eql @dists
+    expect(@repository.dists).to eql @dists
   end
   
   it "has a archs" do
-    @repository.archs.should eql @archs
+    expect(@repository.archs).to eql @archs
   end
   
   it "has a suppository" do
-    @repository.suppository.should eql @suppository
+    expect(@repository.suppository).to eql @suppository
   end
 
 

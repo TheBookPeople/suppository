@@ -8,20 +8,28 @@ module Suppository
     end
 
     def run
+      master_file = create_master_file
+      symlink_files master_file
+    end
+
+    private
+    
+    def create_master_file
       master_file = get_master_file
       FileUtils.copy_file(@deb, master_file, true)
+      master_file
+    end
+    
+    def symlink_files(master_file)
       @repository.dists.each do |dist|
         @repository.archs.each do |arch|
           FileUtils.ln_s master_file, dist_file(dist,arch)
         end
       end
     end
-
-    private
     
     def dist_file(dist,arch)
       filename = Suppository::Deb.new(@deb).filename
-      puts "#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/#{filename}"
       "#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/#{filename}"
     end
 

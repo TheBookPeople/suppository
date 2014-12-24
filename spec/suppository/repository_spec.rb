@@ -6,8 +6,8 @@ describe Suppository::Repository do
 
   before(:each) do
     @repository = Suppository::Repository.new("/tmp/repo123")
-    @dists = ['natty','lucid', 'precise', 'soucy', 'trusty']
-    @archs = ['amd64','i386']
+    @dists = %w(natty lucid precise soucy trusty)
+    @archs = %w(amd64 i386)
     @suppository ="/tmp/repo123/.suppository"
   end
 

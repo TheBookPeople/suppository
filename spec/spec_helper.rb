@@ -3,6 +3,8 @@ require 'fakefs/spec_helpers'
 require 'rspec/mocks/standalone'
 require 'stringio'
 require 'simplecov'
+require "codeclimate-test-reporter"
+CodeClimate::TestReporter.start
 
 SimpleCov.start do
 end

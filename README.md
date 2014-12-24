@@ -1,7 +1,5 @@
 # Suppository
-[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository)
-
-[![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) 
+[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository) [![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) 
 
 TODO: Write a gem description
 

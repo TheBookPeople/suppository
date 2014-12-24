@@ -6,6 +6,8 @@ module Suppository
       @attibutes = parser(output)
     end
 
+    private
+    
     def parser(output)
       attibutes = {}
       description = []

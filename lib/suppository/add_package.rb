@@ -1,3 +1,5 @@
+require 'suppository/deb'
+
 module Suppository
   class AddPackage
     def initialize(repository, deb)
@@ -6,12 +8,24 @@ module Suppository
     end
 
     def run
-      FileUtils.copy_file(@deb, destination, true)
+      master_file = get_master_file
+      FileUtils.copy_file(@deb, master_file, true)
+      @repository.dists.each do |dist|
+        @repository.archs.each do |arch|
+          FileUtils.ln_s master_file, dist_file(dist,arch)
+        end
+      end
     end
 
     private
+    
+    def dist_file(dist,arch)
+      filename = Suppository::Deb.new(@deb).filename
+      puts "#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/#{filename}"
+      "#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/#{filename}"
+    end
 
-    def destination
+    def get_master_file
       "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
     end
 

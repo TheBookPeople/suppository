@@ -19,14 +19,20 @@ describe Suppository::AddPackage do
   end
   
 
-  it "can add a package to the supposotory" do  
+  it "adds package to the supposotory" do  
     @adder.run
     file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
     expect(File.file?("#{@repository.suppository}/#{file_name}")).to be_truthy
   end
-
-
-
+  
+  it "adds package to dists" do  
+    @adder.run
+    @repository.dists.each do |dist|
+      @repository.archs.each do |arch|
+        expect(File.file?("#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_truthy
+      end
+    end
+  end
 
 end
 

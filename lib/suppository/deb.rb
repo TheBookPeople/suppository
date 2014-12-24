@@ -4,7 +4,6 @@ require 'pp'
 module Suppository
   class Deb
     def initialize(path)
-      puts `dpkg-deb -f #{path}`
       @attr = Suppository::DpkgParser.new(`dpkg-deb -f #{path}`).attibutes
     end
 

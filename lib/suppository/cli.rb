@@ -7,24 +7,20 @@ module Suppository
         puts "Suppository Version #{Suppository::VERSION}"
         return
       end
-      
+
       if args.first == 'create'
         Suppository::CreateRepository.new(repository(args[1])).run
         return
       end
-      
+
       if args.first == 'add'
         Suppository::AddPackage.new(repository(args[1]), args[2]).run
         return
       end
-      
     end
-    
-    private
-    
+
     def self.repository(path)
       Suppository::Repository.new(path)
     end
-    
   end
 end

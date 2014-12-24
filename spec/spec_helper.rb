@@ -11,10 +11,11 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 RSpec.configure do |config| 
+  
   config.before do
     $stdout = StringIO.new
   end
-  
+
   config.after(:all) do
     $stdout = STDOUT
   end
@@ -37,3 +38,5 @@ def get_exception
   end 
   e_message
 end
+
+

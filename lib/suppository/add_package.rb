@@ -12,7 +12,23 @@ module Suppository
     private
 
     def destination
-      "#{@repository.suppository}/#{File.basename(@deb)}"
+      "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
+    end
+
+    def suppository
+      @repository.suppository
+    end
+
+    def md5
+      Digest::MD5.file(@deb).hexdigest
+    end
+
+    def sha1
+      Digest::SHA1.file(@deb).hexdigest
+    end
+
+    def sha2
+      Digest::SHA2.file(@deb).hexdigest
     end
   end
 end

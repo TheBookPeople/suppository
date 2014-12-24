@@ -90,5 +90,9 @@ describe Suppository::DpkgParser do
   it "original_maintainer" do
     expect(@instance.attibutes['original_maintainer']).to eql 'Ramakrishnan Muthukrishnan <rkrishnan@debian.org>'
   end
+  
+  it "handles invalid" do
+    expect(get_exception{Suppository::DpkgParser.new "Boom Bang"}).to eql "can't parse line - 'Boom Bang'"
+  end
 end
 

@@ -23,6 +23,14 @@ describe Suppository::Deb do
     expect(error).to be_truthy
   end
   
+  it "respond_to?" do
+    expect(@deb.respond_to?(:package)).to be_truthy
+  end
+  
+  it "respond_to? false" do
+    expect(@deb.respond_to?(:boom)).to be_falsey
+  end
+  
   it "filename" do
     expect(@deb.filename).to eql 'curl_7.22.0-3ubuntu4.11_amd64.deb'
   end

@@ -1,26 +1,24 @@
-require 'suppository/create_repository'
+require 'rubygems'
+require 'suppository/create_command'
+require 'suppository/add_command'
+require 'suppository/version_command'
+require 'suppository/exceptions'
 
 module Suppository
   class CLI
     def self.run(args)
-      if args.first == 'version'
-        puts "Suppository Version #{Suppository::VERSION}"
-        return
-      end
+      fail UsageError if args.empty?
 
-      if args.first == 'create'
-        Suppository::CreateRepository.new(repository(args[1])).run
-        return
+      case args.delete_at(0)
+      when 'version'
+        Suppository::VersionCommand.new.run
+      when 'create'
+        Suppository::CreateCommand.new(args).run
+      when 'add'
+        Suppository::AddCommand.new(args).run
+      else
+        fail UsageError
       end
-
-      if args.first == 'add'
-        Suppository::AddPackage.new(repository(args[1]), args[2]).run
-        return
-      end
-    end
-
-    def self.repository(path)
-      Suppository::Repository.new(path)
     end
   end
 end

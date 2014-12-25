@@ -1,8 +1,8 @@
 require 'rubygems'
 require 'spec_helper'
-require 'suppository/dpkg_parser'
+require 'suppository/dpkg_deb'
 
-describe Suppository::DpkgParser do
+describe Suppository::DpkgDeb do
   
   class String
     def undent
@@ -32,11 +32,8 @@ describe Suppository::DpkgParser do
      authentication, FTP upload, HTTP post, file transfer resume and more.
     Original-Maintainer: Ramakrishnan Muthukrishnan <rkrishnan@debian.org>
     EOS
-    @instance = Suppository::DpkgParser.new text
-  end
-
-  it "description" do
-    expect(@instance.attibutes['description']).to eql "Get a file from an HTTP, HTTPS or FTP server curl is a client to get files from servers using any of the supported\n protocols. The command is designed to work without user interaction\n or any kind of interactivity.\n .\n curl offers a busload of useful tricks like proxy support, user\n authentication, FTP upload, HTTP post, file transfer resume and more.\n"
+    deb_file = File.expand_path(File.dirname(__FILE__)+"../../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
+    @instance = Suppository::DpkgDeb.new deb_file
   end
   
   it "package" do
@@ -91,8 +88,6 @@ describe Suppository::DpkgParser do
     expect(@instance.attibutes['original_maintainer']).to eql 'Ramakrishnan Muthukrishnan <rkrishnan@debian.org>'
   end
   
-  it "handles invalid" do
-    expect(get_exception{Suppository::DpkgParser.new "Boom Bang"}).to eql "can't parse line - 'Boom Bang'"
-  end
+ 
 end
 

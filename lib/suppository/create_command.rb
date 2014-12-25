@@ -1,7 +1,7 @@
 module Suppository
-  class CreateRepository
-    def initialize(repository)
-      @repository = repository
+  class CreateCommand
+    def initialize(args)
+      @repository = repository(args[0])
     end
 
     def run
@@ -10,6 +10,10 @@ module Suppository
     end
 
     private
+
+    def repository(path)
+      Suppository::Repository.new(path)
+    end
 
     def assert_not_created
       File.exist?(suppository) ? fail("#{path} is already a repository") : ''

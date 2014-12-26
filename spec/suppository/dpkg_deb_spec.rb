@@ -4,35 +4,7 @@ require 'suppository/dpkg_deb'
 
 describe Suppository::DpkgDeb do
   
-  class String
-    def undent
-      gsub(/^.{#{slice(/^ +/).length}}/, '')
-    end
-  end
-  
   before(:each) do
-    text =<<-EOS.undent
-    Package: curl
-    Version: 7.22.0-3ubuntu4.11
-    Architecture: amd64
-    Maintainer: Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>
-    Installed-Size: 345
-    Depends: libc6 (>= 2.14), libcurl3 (>= 7.16.2-1), zlib1g (>= 1:1.1.4)
-    Replaces: curl-ssl
-    Provides: curl-ssl
-    Section: web
-    Priority: optional
-    Homepage: http://curl.haxx.se
-    Description: Get a file from an HTTP, HTTPS or FTP server
-     curl is a client to get files from servers using any of the supported
-     protocols. The command is designed to work without user interaction
-     or any kind of interactivity.
-     .
-     curl offers a busload of useful tricks like proxy support, user
-     authentication, FTP upload, HTTP post, file transfer resume and more.
-    Original-Maintainer: Ramakrishnan Muthukrishnan <rkrishnan@debian.org>
-    EOS
-    deb_file = File.expand_path(File.dirname(__FILE__)+"../../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
     @instance = Suppository::DpkgDeb.new deb_file
   end
   

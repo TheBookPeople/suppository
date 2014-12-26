@@ -6,6 +6,8 @@ require 'suppository/exceptions'
 module Suppository
   class AddCommand
     def initialize(args)
+      fail UsageError if args.nil? or args.length != 4
+      
       @repository = Suppository::Repository.new(args[0])
       @dist = args[1]
       @component = args[2]
@@ -15,8 +17,9 @@ module Suppository
     def run
       assert_dist_exists
       assert_component_exists
-      master_file = create_master_file
-      symlink_files master_file
+      
+      create_suppository_file
+      symlink_file suppository_file
     end
 
     private
@@ -29,13 +32,11 @@ module Suppository
       fail InvalidComponent unless File.exist?("#{component_path}")
     end
 
-    def create_master_file
-      file = master_file
-      FileUtils.copy_file(@deb, file, true)
-      file
+    def create_suppository_file
+      FileUtils.copy_file(@deb, suppository_file, true)
     end
 
-    def symlink_files(master_file)
+    def symlink_file(master_file)
       @repository.archs.each do |arch|
         FileUtils.ln_s master_file, dist_file(arch)
       end
@@ -46,7 +47,7 @@ module Suppository
       "#{component_path}/binary-#{arch}/#{filename}"
     end
 
-    def master_file
+    def suppository_file
       "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
     end
 
@@ -63,15 +64,15 @@ module Suppository
     end
 
     def md5
-      Digest::MD5.file(@deb).hexdigest
+      @md5 ||= Digest::MD5.file(@deb).hexdigest
     end
 
     def sha1
-      Digest::SHA1.file(@deb).hexdigest
+      @sha1 ||= Digest::SHA1.file(@deb).hexdigest
     end
 
     def sha2
-      Digest::SHA2.file(@deb).hexdigest
+      @sha2 ||= Digest::SHA2.file(@deb).hexdigest
     end
   end
 end

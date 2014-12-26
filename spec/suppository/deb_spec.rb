@@ -5,8 +5,7 @@ require 'suppository/deb'
 describe Suppository::Deb do
   
   before(:each) do
-    @deb_file = File.expand_path(File.dirname(__FILE__)+"../../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
-    @deb = Suppository::Deb.new(@deb_file)
+    @deb = Suppository::Deb.new(deb_file)
   end
 
   it "gets attribute by method" do

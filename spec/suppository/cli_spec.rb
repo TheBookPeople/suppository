@@ -55,8 +55,6 @@ describe Suppository::CLI do
     
     expect(usage_error).to be_truthy 
   end
-  
-  
 end
   
   

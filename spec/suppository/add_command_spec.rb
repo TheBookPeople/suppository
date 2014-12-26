@@ -3,6 +3,7 @@ require 'spec_helper'
 require 'suppository/add_command'
 require 'suppository/repository'
 require 'suppository/create_command'
+require 'suppository/exceptions'
 
 describe Suppository::AddCommand do
 
@@ -11,11 +12,10 @@ describe Suppository::AddCommand do
   before(:each) do
     @repository = Suppository::Repository.new("/tmp/supposotory_test_#{Time.now.to_f}")
     Suppository::CreateCommand.new([@repository.path]).run
-    @test_deb = File.expand_path(File.dirname(__FILE__)+"../../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
-    FakeFS::FileSystem.clone(@test_deb)
+    FakeFS::FileSystem.clone(deb_file)
     @dist = 'trusty'
     @component = 'internal'
-    @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, @test_deb])
+    @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
   end
   
   it "adds package to the supposotory" do  
@@ -38,7 +38,7 @@ describe Suppository::AddCommand do
   end
   
   it "cant add package to new dists" do  
-    @adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, @test_deb])
+    @adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, deb_file])
     
     error = false
     begin
@@ -51,12 +51,45 @@ describe Suppository::AddCommand do
   end
   
   it "cant add package to new component" do  
-    @adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing', @test_deb])
+    @adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing', deb_file])
     
     error = false
     begin
       @adder.run
     rescue InvalidComponent
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+  
+  it "needs non nil arguments" do  
+    error = false
+    begin
+     @adder = Suppository::AddCommand.new(nil)
+    rescue UsageError
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+  
+  it "needs arguments" do  
+    error = false
+    begin
+     @adder = Suppository::AddCommand.new([])
+    rescue UsageError
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+
+  it "needs four arguments" do  
+    error = false
+    begin
+     @adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing'])
+    rescue UsageError
       error = true
     end
     

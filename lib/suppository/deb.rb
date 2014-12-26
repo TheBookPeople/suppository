@@ -1,5 +1,4 @@
 require 'suppository/dpkg_deb'
-require 'pp'
 
 module Suppository
   class Deb

@@ -11,6 +11,14 @@ A RubyGem that can be used to manage a simple apt repository.
 	
 ## Usage
 
+### Get Help
+
+    $ suppository help
+
+### Get Version
+
+    $ suppository version
+
 ### Create new repository
 
     $ suppository create REPOSITORY_PATH

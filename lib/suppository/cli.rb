@@ -1,7 +1,4 @@
 require 'rubygems'
-require 'suppository/create_command'
-require 'suppository/add_command'
-require 'suppository/version_command'
 require 'suppository/exceptions'
 
 module Suppository
@@ -12,12 +9,13 @@ module Suppository
 
       begin
         clazz(cmd).new(args).run
-      rescue NameError
+      rescue LoadError
         raise UsageError
       end
     end
 
     def self.clazz(cmd)
+      require "suppository/#{cmd}_command"
       clazz_name(cmd).split('::').inject(Object) { |a, e| a.const_get e }
     end
 

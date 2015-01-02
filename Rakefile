@@ -2,7 +2,6 @@ require 'rubygems'
 require 'rake'
 require 'rspec/core/rake_task'
 require 'rubocop/rake_task'
-require 'ruby-lint/rake_task'
 require 'bundler/gem_tasks'
 require 'simplecov'
 

@@ -7,16 +7,12 @@ module Suppository
     def initialize(line)
       field = split_line(line)
       if description?(line)
-        @field = DESCRIPTION_FIELD
-        @value = line
+        @attributes = { DESCRIPTION_FIELD => line }
       elsif field
-        @field = camel_case(field['fieldname'])
-        @value = field['fieldvalue']
+        @attributes = { camel_case(field['fieldname']) => field['fieldvalue'] }
       else
         fail "can't parse line - '#{line}'"
       end
-
-      @attributes = { @field => @value }
     end
 
     private

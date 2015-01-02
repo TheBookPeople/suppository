@@ -8,17 +8,21 @@ module Suppository
   class CLI
     def self.run(args)
       fail UsageError if args.empty?
+      cmd = args.delete_at(0)
 
-      case args.delete_at(0)
-      when 'version'
-        Suppository::VersionCommand.new.run
-      when 'create'
-        Suppository::CreateCommand.new(args).run
-      when 'add'
-        Suppository::AddCommand.new(args).run
-      else
-        fail UsageError
+      begin
+        clazz(cmd).new(args).run
+      rescue NameError
+        raise UsageError
       end
+    end
+
+    def self.clazz(cmd)
+      clazz_name(cmd).split('::').inject(Object) { |a, e| a.const_get e }
+    end
+
+    def self.clazz_name(cmd)
+      "Suppository::#{cmd.capitalize}Command"
     end
   end
 end

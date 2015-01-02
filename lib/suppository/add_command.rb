@@ -6,8 +6,8 @@ require 'suppository/exceptions'
 module Suppository
   class AddCommand
     def initialize(args)
-      fail UsageError if args.nil? or args.length != 4
-      
+      fail UsageError if args.nil? || args.length != 4
+
       @repository = Suppository::Repository.new(args[0])
       @dist = args[1]
       @component = args[2]
@@ -17,7 +17,7 @@ module Suppository
     def run
       assert_dist_exists
       assert_component_exists
-      
+
       create_suppository_file
       symlink_file suppository_file
     end

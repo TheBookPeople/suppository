@@ -15,7 +15,7 @@ describe Suppository::CLI do
   
   it "shows current version" do    
     command = double(Suppository::VersionCommand)
-    expect(Suppository::VersionCommand).to receive(:new).with(no_args) {command}
+    expect(Suppository::VersionCommand).to receive(:new).with([]) {command}
     expect(command).to receive(:run)
     Suppository::CLI.run(['version'])
   end

@@ -10,27 +10,27 @@ module Suppository
     end
 
     private
-    
+
     def repository(path)
       Suppository::Repository.new(path)
     end
-    
+
     def assert_not_created
       File.exist?(suppository) ? fail("#{path} is already a repository") : ''
     end
-    
+
     def create_repository
       puts "Creating new Repository @ #{path}"
       FileUtils.mkdir_p "#{suppository}"
       create_dists_folders
     end
-    
+
     def create_dists_folders
       @repository.dists.each do |dist|
         create_archs_folders dist
       end
     end
-    
+
     def create_archs_folders(dist)
       @repository.archs.each do |arch|
         create_folder(path, dist, arch)

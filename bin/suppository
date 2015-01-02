@@ -1,0 +1,36 @@
+#!/bin/ruby -W0
+# encoding: UTF-8
+# -*- mode: ruby -*-
+require_relative '../lib/suppository/cli'
+require_relative '../lib/suppository/tty'
+require_relative '../lib/suppository/help'
+
+std_trap = trap("INT") { exit! 130 } # no backtrace thanks
+
+begin
+  trap("INT", std_trap) # restore default CTRL-C handler
+  Suppository::CLI.run(ARGV)
+rescue UsageError
+  Suppository::Tty.on_error "Invalid usage"
+  abort Suppository.help
+rescue SystemExit
+  puts "Kernel.exit" if ARGV.verbose?
+  raise
+rescue Interrupt => e
+  puts # seemingly a newline is typical
+  exit 130
+rescue RuntimeError, SystemCallError => e
+  raise if e.message.empty?
+  Suppository::Tty.on_error(e)
+  exit 1
+rescue Exception => e
+  Suppository::Tty.on_error(e)
+  puts "#{Suppository::Tty.white}Please report this bug:"
+  puts "    #{Suppository::Tty.em}https://github.com/TheBookPeople/suppository/issues#{Suppository::Tty.reset}"
+  puts e.backtrace
+  exit 1
+end
+
+
+
+

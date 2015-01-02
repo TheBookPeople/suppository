@@ -8,14 +8,28 @@ A RubyGem that can be used to manage a simple apt repository.
 ## Installation
 
     $ gem install suppository
+	
+## Usage
+
+### Create new repository
+
+    $ suppository create REPOSITORY_PATH
+
+### Add Deb to existing repository
+
+    $ suppository add REPOSITORY DIST_NAME COMPONENT_NAME DEB_FILE
 
 ## Build
 
 ### Prerequisites
 
 Ruby 2.0.0 (We use RVM to manage the Ruby Version https://rvm.io/ )
+
 Bundler
+
 RubyGems
+
+#### OSX
 
 If you are developing on a Mac the you will need to install dpkg for the tests to pass. The simplest way to install it is with 
 Homebrew (see http://brew.sh/ on how to install Homebrew)
@@ -31,17 +45,14 @@ The default rake task will run code quality checks and all the tests.
 If you want to automatically run the tests during development, you can use Guard. Guard will watch for file changes
 and run the appropriate tests. See https://github.com/guard/guard for more information on guard
 
-    $bundle exec guard	
+    $ bundle exec guard	
 
 ### Create Gem
 
-    $bundle exec build	
+    $ bundle exec build	
 
 This will run all the tests and then create a gem file. NOTE: Only files tracked by Git will be included in the gem.
-## Usage
 
-    $suppository create REPOSITORY_PATH
-    $suppository add REPOSITORY DIST_NAME COMPONENT_NAME DEB_FILE
 
 ## Contributing
 

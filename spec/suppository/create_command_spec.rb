@@ -29,6 +29,26 @@ describe Suppository::CreateCommand do
     @creator.run
     expect(File.directory?('/tmp/repo123/.suppository')).to be_truthy
   end
+  
+  it "creates a Packages file" do
+    repository = Suppository::Repository.new('/tmp/repo123/')
+    @creator.run
+    repository.dists.each do |dist|
+      repository.archs.each do |arch|
+        expect(File.file?("#{repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages")).to be_truthy
+      end
+    end
+  end
+  
+  it "creates a Packages.gz file" do
+    repository = Suppository::Repository.new('/tmp/repo123/')
+    @creator.run
+    repository.dists.each do |dist|
+      repository.archs.each do |arch|
+        expect(File.file?("#{repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages.gz")).to be_truthy
+      end
+    end
+  end
 
   it "aborts if file supository already exists" do
     repository = Suppository::Repository.new('/tmp/repo123/')

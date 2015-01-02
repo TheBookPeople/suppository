@@ -44,6 +44,12 @@ module Suppository
     def create_folder(path, dist, arch)
       dir_path = "#{path}/dists/#{dist}/internal/binary-#{arch}"
       FileUtils.mkdir_p dir_path
+      create_packages_file(dir_path)
+    end
+    
+    def create_packages_file(path)
+      FileUtils.touch "#{path}/Packages"
+      FileUtils.touch "#{path}/Packages.gz"
     end
 
     def suppository

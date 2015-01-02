@@ -12,12 +12,12 @@ describe Suppository::CreateCommand do
   end
 
   it "can create new repository" do
-    expect{@creator.run}.to output("Creating new Repository @ /tmp/repo123/\n").to_stdout 
+    expect{@creator.run}.to output("==> Created new Repository - /tmp/repo123/\n").to_stdout 
   end
 
   it "can create new repository at different location" do
     creator = Suppository::CreateCommand.new(["/tmp/repo321"])
-    expect{creator.run}.to output("Creating new Repository @ /tmp/repo321\n").to_stdout 
+    expect{creator.run}.to output("==> Created new Repository - /tmp/repo321\n").to_stdout 
   end
 
   it "creates repository root folder" do

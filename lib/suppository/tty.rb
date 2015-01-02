@@ -28,6 +28,10 @@ module Suppository
       def on_error(error)
         $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
       end
+      
+      def on_success(message)
+         puts "#{Tty.green}==>#{Tty.white} #{message}#{Tty.reset}"
+      end
 
       private
 

@@ -1,3 +1,7 @@
+require 'rubygems'
+require 'suppository/tty'
+require 'suppository/repository'
+
 module Suppository
   class CreateCommand
     def initialize(args)
@@ -20,9 +24,9 @@ module Suppository
     end
 
     def create_repository
-      puts "Creating new Repository @ #{path}"
       FileUtils.mkdir_p "#{suppository}"
       create_dists_folders
+      Tty.on_success "Created new Repository - #{path}"
     end
 
     def create_dists_folders

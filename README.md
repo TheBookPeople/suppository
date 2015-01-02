@@ -11,11 +11,11 @@ A RubyGem that can be used to manage a simple apt repository.
 	
 ## Usage
 
-### Get Help
+### Help
 
     $ suppository help
 
-### Get Version
+### Version
 
     $ suppository version
 

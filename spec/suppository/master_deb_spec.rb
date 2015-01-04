@@ -3,9 +3,13 @@ require 'spec_helper'
 require 'suppository/master_deb'
 
 describe Suppository::MasterDeb do
-
+  
   before(:each) do
-    @instance = Suppository::MasterDeb.new('/tmp/repo123/.suppository/12_3456_78910.deb')
+    master_deb_file = '/tmp/repo123/.suppository/12_3456_78910.deb'
+    dpkg = double(Suppository::DpkgDeb)
+    expect(dpkg).to receive(:attibutes) {[]}
+    expect(Suppository::DpkgDeb).to receive(:new).with(master_deb_file) {dpkg}
+    @instance = Suppository::MasterDeb.new(master_deb_file)
   end
     
   it "md5sum" do

@@ -26,6 +26,7 @@ module Suppository
       packages.each { |f| result << puts_hash(f, Digest::SHA256.file(f)) }
       result << "SHA512:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA512.file(f)) }
+      result
     end
 
     def puts_hash(f, hash)

@@ -31,7 +31,7 @@ A RubyGem that can be used to manage a simple apt repository.
 
 ### Prerequisites
 
-Ruby 2.0.0 (We use RVM to manage the Ruby Version https://rvm.io/ )
+Tested on Ruby 1.9.3, 2.0.0, 2.1.5 and 2.2.0
 
 Bundler
 
@@ -48,7 +48,7 @@ Homebrew (see http://brew.sh/ on how to install Homebrew)
 The default rake task will run code quality checks and all the tests.
  
     $ bundle install
-	$ bundle exec rake
+    $ bundle exec rake
 
 If you want to automatically run the tests during development, you can use Guard. Guard will watch for file changes
 and run the appropriate tests. See https://github.com/guard/guard for more information on guard

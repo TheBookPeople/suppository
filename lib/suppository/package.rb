@@ -22,7 +22,6 @@ module Suppository
       result << "Priority: #{@deb.priority}\n"
       result << "Homepage: #{@deb.homepage}\n"
       result << "Description: #{@deb.description}\n"
-      result << "\n"
     end
 
     private

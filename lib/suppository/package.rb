@@ -1,8 +1,9 @@
 
 module Suppository
   class Package
-    def initialize(deb)
+    def initialize(parent_folder, deb)
       @deb = deb
+      @parent_folder = parent_folder
     end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
@@ -19,14 +20,14 @@ module Suppository
       result << "SHA256: #{@deb.sha256}\n"
       result << "Section: #{@deb.section}\n"
       result << "Priority: #{@deb.priority}\n"
+      result << "Homepage: #{@deb.homepage}\n"
       result << "Description: #{@deb.description}\n"
-      result << "\n"
     end
 
     private
 
     def filename
-      "#{@deb.dirname}#{@deb.filename}"
+      "#{@parent_folder}#{@deb.filename}"
     end
   end
 end

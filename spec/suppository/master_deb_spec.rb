@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'spec_helper'
 require 'suppository/master_deb'
+require 'suppository/dpkg_deb'
+require 'suppository/repository'
 
 describe Suppository::MasterDeb do
   
@@ -8,15 +10,20 @@ describe Suppository::MasterDeb do
     @valid_file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
   end
   
+  before(:each) do
+    @repository = Suppository::Repository.new "/tmp/supposotory_test_#{Time.now.to_f}/"
+    master_deb_file = "#{@repository.suppository}/#{@valid_file_name}"
+    FileUtils.mkdir_p @repository.suppository
+    FileUtils.cp deb_file, master_deb_file 
+    @instance = Suppository::MasterDeb.new(master_deb_file)
+  end
+  
+  
+  after(:each) do
+   FileUtils.rm_r @repository.path
+  end
+  
   describe 'valid file' do  
-    
-    before(:each) do
-      master_deb_file = "/tmp/repo123/.suppository/#{@valid_file_name}"
-      dpkg = double(Suppository::DpkgDeb)
-      expect(dpkg).to receive(:attibutes) {[]}
-      expect(Suppository::DpkgDeb).to receive(:new).with(master_deb_file) {dpkg}
-      @instance = Suppository::MasterDeb.new(master_deb_file)
-    end
     
     it "md5sum" do
       expect(@instance.md5sum).to eql 'e5ca0a9797acda4bfe8404524f0976b3'
@@ -59,6 +66,32 @@ describe Suppository::MasterDeb do
       expect(exception.message).to be_eql 'Master deb must have the following name {md5}_{sha1}_{sha256}.deb'
     end
   
+  end
+
+  it "gets attribute by method" do
+    expect(@instance.package).to eql 'curl'
+  end
+  
+  it "fails with invalid attribute" do
+    error = false
+    begin
+      @instance.boom
+    rescue NoMethodError => error
+       error = true
+    end
+    expect(error).to be_truthy
+  end
+  
+  it "respond_to?" do
+    expect(@instance.respond_to?(:package)).to be_truthy
+  end
+  
+  it "respond_to? false" do
+    expect(@instance.respond_to?(:boom)).to be_falsey
+  end
+  
+  it "filename" do
+    expect(@instance.filename).to eql 'curl_7.22.0-3ubuntu4.11_amd64.deb'
   end
    
 end

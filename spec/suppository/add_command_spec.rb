@@ -43,10 +43,11 @@ describe Suppository::AddCommand do
     supository_file = "#{@repository.suppository}/#{@file_name}"
     @adder.run
      @repository.archs.each do |arch|
-       path = "#{@repository.path}dists/#{@dist}/#{@component}/binary-#{arch}/"
+       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
+       path = "#{@repository.path}#{internal_path}"
        packages_path = "#{path}/Packages"
        deb = Suppository::MasterDeb.new(supository_file)
-       content = Suppository::Package.new(deb).content
+       content = Suppository::Package.new(internal_path, deb).content
        expect(File.read(packages_path)).to match content
      end
   end
@@ -55,10 +56,11 @@ describe Suppository::AddCommand do
     supository_file = "#{@repository.suppository}/#{@file_name}"
     @adder.run
      @repository.archs.each do |arch|
-       path = "#{@repository.path}dists/#{@dist}/#{@component}/binary-#{arch}/"
+       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
+       path = "#{@repository.path}#{internal_path}"
        packages_path = "#{path}/Packages.gz"
        deb = Suppository::MasterDeb.new(supository_file)
-       content = Suppository::Package.new(deb).content
+       content = Suppository::Package.new(internal_path,deb).content
        result =""
        Zlib::GzipReader.open(packages_path) {|gz|
          result << gz.read

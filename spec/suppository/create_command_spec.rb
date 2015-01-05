@@ -12,7 +12,7 @@ describe Suppository::CreateCommand do
   end
   
   after(:each) do
-    FileUtils.rm_r @repository.path
+    FileUtils.rm_r(@repository.path) if File.directory?(@repository.path) 
   end
 
   it "can create new repository" do
@@ -63,5 +63,28 @@ describe Suppository::CreateCommand do
       end
     end
   end
+  
+  it "needs non nil arguments" do  
+    error = false
+    begin
+     @adder = Suppository::CreateCommand.new(nil)
+    rescue UsageError
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+  
+  it "needs arguments" do  
+    error = false
+    begin
+     @adder = Suppository::CreateCommand.new([])
+    rescue UsageError
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+
 end
 

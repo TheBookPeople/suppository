@@ -1,12 +1,14 @@
 require 'rubygems'
 require 'suppository/tty'
 require 'suppository/repository'
+require 'suppository/exceptions'
 require 'fileutils'
 require 'zlib'
 
 module Suppository
   class CreateCommand
     def initialize(args)
+      assert_arguments args
       @repository = repository(args[0])
     end
 
@@ -16,6 +18,11 @@ module Suppository
     end
 
     private
+    
+    def assert_arguments(args)
+      message = 'Create command needs one argument, the path to the new repository'
+      fail UsageError if args.nil? || args.length != 1
+    end
 
     def repository(path)
       Suppository::Repository.new(path)

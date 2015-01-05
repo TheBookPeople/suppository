@@ -20,6 +20,7 @@ module Suppository
       result << "SHA256: #{@deb.sha256}\n"
       result << "Section: #{@deb.section}\n"
       result << "Priority: #{@deb.priority}\n"
+      result << "Homepage: #{@deb.homepage}\n"
       result << "Description: #{@deb.description}\n"
       result << "\n"
     end

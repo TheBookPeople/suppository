@@ -30,9 +30,8 @@ EOS
 
   before(:each) do
     deb = double(Suppository::MasterDeb)
-    @instance = Suppository::Package.new(deb)
+    @instance = Suppository::Package.new('dists/trusty/internal/binary-amd64/',deb)
     expect(deb).to receive(:package) {'curl'}
-    expect(deb).to receive(:dirname) {'dists/trusty/internal/binary-amd64/'}
     expect(deb).to receive(:version) {'7.22.0-3ubuntu4.11'}
     expect(deb).to receive(:architecture) {'amd64'}
     expect(deb).to receive(:maintainer) { 'Ubuntu Developers <ubuntu-devel-discuss@lists.ubuntu.com>'}

@@ -1,5 +1,4 @@
 require 'rubygems'
-require 'suppository/deb'
 require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'
@@ -48,7 +47,7 @@ module Suppository
     def update_packages(master_file, arch)
       deb = Suppository::MasterDeb.new(master_file)
       file = package_file(arch)
-      package_info = Suppository::Package.new(deb).content
+      package_info = Suppository::Package.new(internal_path(arch), deb).content
       open(file, 'a') { |f| f.puts package_info }
       gzip file
     end
@@ -61,14 +60,18 @@ module Suppository
         gz.write IO.read(file)
       end
     end
-
+    
     def dist_file(arch)
-      filename = Suppository::Deb.new(@deb).filename
+      filename = Suppository::MasterDeb.new(suppository_file).filename
       "#{component_path}/binary-#{arch}/#{filename}"
     end
 
     def package_file(arch)
       "#{component_path}/binary-#{arch}/Packages"
+    end
+    
+    def internal_path(arch)
+      "dists/#{@dist}/#{@component}/binary-#{arch}/"
     end
 
     def suppository_file

@@ -1,7 +1,9 @@
 require 'rubygems'
 require 'suppository/deb'
+require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'
+require 'suppository/package'
 
 module Suppository
   class AddCommand
@@ -19,7 +21,7 @@ module Suppository
       assert_component_exists
 
       create_suppository_file
-      symlink_file suppository_file
+      create_dist_file suppository_file
     end
 
     private
@@ -36,9 +38,28 @@ module Suppository
       FileUtils.copy_file(@deb, suppository_file, true)
     end
 
-    def symlink_file(master_file)
+    def create_dist_file(master_file)
       @repository.archs.each do |arch|
-        FileUtils.ln_s master_file, dist_file(arch)
+        FileUtils.ln_s master_file, dist_file(arch)      
+        update_packages master_file, arch
+      end
+    end
+    
+    def update_packages(master_file, arch)
+      deb = Suppository::MasterDeb.new(master_file)
+      file = package_file(arch)
+      open(file, 'a') { |f|
+        f.puts Suppository::Package.new(deb).content
+      }
+      gzip file
+    end
+    
+    def gzip(file)
+      gz_file = "#{file}.gz"
+      Zlib::GzipWriter.open(gz_file) do |gz|
+        gz.mtime = File.mtime(file)
+        gz.orig_name = file
+        gz.write IO.read(file)
       end
     end
 
@@ -46,7 +67,11 @@ module Suppository
       filename = Suppository::Deb.new(@deb).filename
       "#{component_path}/binary-#{arch}/#{filename}"
     end
-
+    
+    def package_file(arch)
+      "#{component_path}/binary-#{arch}/Packages"
+    end
+    
     def suppository_file
       "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
     end

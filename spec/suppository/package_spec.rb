@@ -18,13 +18,13 @@ SHA1: b37ce9b17405d93c323c0b8bbe167c6f2dccfe02
 SHA256: 5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555
 Section: web
 Priority: optional
+Homepage: http://www.test.com/
 Description: Get a file from an HTTP, HTTPS or FTP server curl is a client to get files from servers using any of the supported
  protocols. The command is designed to work without user interaction
  or any kind of interactivity.
  .
  curl offers a busload of useful tricks like proxy support, user
  authentication, FTP upload, HTTP post, file transfer resume and more.
-
 
 EOS
 
@@ -38,6 +38,7 @@ EOS
     expect(deb).to receive(:installed_size) { '3450'}
     expect(deb).to receive(:size) { '345'}
     expect(deb).to receive(:section) {'web'}
+    expect(deb).to receive(:homepage) {'http://www.test.com/'}
     expect(deb).to receive(:priority) {'optional'}
     expect(deb).to receive(:description) {"Get a file from an HTTP, HTTPS or FTP server curl is a client to get files from servers using any of the supported\n protocols. The command is designed to work without user interaction\n or any kind of interactivity.\n .\n curl offers a busload of useful tricks like proxy support, user\n authentication, FTP upload, HTTP post, file transfer resume and more.\n"}
     expect(deb).to receive(:filename) {'curl_7.22.0-3ubuntu4.11_amd64.deb'}

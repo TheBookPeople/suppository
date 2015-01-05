@@ -4,6 +4,7 @@ require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'
 require 'suppository/package'
+require 'suppository/release'
 require 'fileutils'
 require 'digest'
 require 'zlib'
@@ -25,6 +26,9 @@ module Suppository
 
       create_suppository_file
       create_dist_file suppository_file
+
+      release_info = Suppository::Release.new(@repository.path, @dist).content
+      open("#{dist_path}/Release", 'w') { |f| f.puts release_info }
     end
 
     private

@@ -18,10 +18,10 @@ module Suppository
     end
 
     private
-    
+
     def assert_arguments(args)
       message = 'Create command needs one argument, the path to the new repository'
-      fail UsageError if args.nil? || args.length != 1
+      fail UsageError, message if args.nil? || args.length != 1
     end
 
     def repository(path)

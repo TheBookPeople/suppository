@@ -5,63 +5,61 @@ require 'suppository/repository'
 
 describe Suppository::CreateCommand do
 
-  include FakeFS::SpecHelpers
-
   before(:each) do
-    @creator = Suppository::CreateCommand.new(['/tmp/repo123/'])
+    repository_path = "/tmp/supposotory_test_#{Time.now.to_f}/"
+    @repository = Suppository::Repository.new(repository_path)
+    @creator = Suppository::CreateCommand.new([@repository.path])
+  end
+  
+  after(:each) do
+    FileUtils.rm_r @repository.path
   end
 
   it "can create new repository" do
-    expect{@creator.run}.to output("==> Created new Repository - /tmp/repo123/\n").to_stdout 
+    expect{@creator.run}.to output("==> Created new Repository - #{@repository.path}\n").to_stdout 
   end
 
-  it "can create new repository at different location" do
-    creator = Suppository::CreateCommand.new(["/tmp/repo321"])
-    expect{creator.run}.to output("==> Created new Repository - /tmp/repo321\n").to_stdout 
-  end
 
   it "creates repository root folder" do
     @creator.run
-    expect(File.directory?("/tmp/repo123/")).to be_truthy
+    expect(File.directory?(@repository.path)).to be_truthy
   end
 
   it "creates a .supository file" do
     @creator.run
-    expect(File.directory?('/tmp/repo123/.suppository')).to be_truthy
+    expect(File.directory?("#{@repository.path}/.suppository")).to be_truthy
   end
   
   it "creates a Packages file" do
-    repository = Suppository::Repository.new('/tmp/repo123/')
     @creator.run
-    repository.dists.each do |dist|
-      repository.archs.each do |arch|
-        expect(File.file?("#{repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages")).to be_truthy
+    @repository.dists.each do |dist|
+      @repository.archs.each do |arch|
+        expect(File.file?("#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages")).to be_truthy
       end
     end
   end
   
   it "creates a Packages.gz file" do
-    repository = Suppository::Repository.new('/tmp/repo123/')
     @creator.run
-    repository.dists.each do |dist|
-      repository.archs.each do |arch|
-        expect(File.file?("#{repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages.gz")).to be_truthy
+    @repository.dists.each do |dist|
+      @repository.archs.each do |arch|
+        file_name = "#{@repository.path}dists/#{dist}/internal/binary-#{arch}/Packages.gz"     
+        expect(Zlib::GzipReader.open(file_name)).to be_truthy
       end
     end
   end
 
+
   it "aborts if file supository already exists" do
-    repository = Suppository::Repository.new('/tmp/repo123/')
-    FileUtils.mkdir_p repository.suppository
-    expect(get_exception{@creator.run}).to eql "/tmp/repo123/ is already a repository"
+    FileUtils.mkdir_p @repository.suppository
+    expect(get_exception{@creator.run}).to eql "#{@repository.path} is already a repository"
   end
 
   it "creates folder structure" do
-    repository = Suppository::Repository.new('/tmp/repo123/')
     @creator.run
-    repository.dists.each do |dist|
-      repository.archs.each do |arch|
-        expect(File.directory?("#{repository.path}/dists/#{dist}/internal/binary-#{arch}")).to be_truthy
+    @repository.dists.each do |dist|
+      @repository.archs.each do |arch|
+        expect(File.directory?("#{@repository.path}/dists/#{dist}/internal/binary-#{arch}")).to be_truthy
       end
     end
   end

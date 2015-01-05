@@ -6,16 +6,19 @@ require 'suppository/create_command'
 require 'suppository/exceptions'
 
 describe Suppository::AddCommand do
-
-  include FakeFS::SpecHelpers
-  
+    
   before(:each) do
-    @repository = Suppository::Repository.new("/tmp/supposotory_test_#{Time.now.to_f}")
+    repository_path = "/tmp/supposotory_test_#{Time.now.to_f}/"
+    @repository = Suppository::Repository.new(repository_path)
     Suppository::CreateCommand.new([@repository.path]).run
     FakeFS::FileSystem.clone(deb_file)
     @dist = 'trusty'
     @component = 'internal'
     @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
+  end
+  
+  after(:each) do
+    FileUtils.rm_r @repository.path
   end
   
   it "adds package to the supposotory" do  

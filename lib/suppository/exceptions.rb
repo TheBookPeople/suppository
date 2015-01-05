@@ -6,3 +6,6 @@ end
 
 class InvalidComponent < RuntimeError
 end
+
+class InvalidMasterDeb < RuntimeError
+end

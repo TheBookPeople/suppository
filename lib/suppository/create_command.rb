@@ -42,14 +42,24 @@ module Suppository
     end
 
     def create_folder(path, dist, arch)
-      dir_path = "#{path}/dists/#{dist}/internal/binary-#{arch}"
+      dir_path = "#{path}dists/#{dist}/internal/binary-#{arch}"
       FileUtils.mkdir_p dir_path
       create_packages_file(dir_path)
     end
 
     def create_packages_file(path)
-      FileUtils.touch "#{path}/Packages"
-      FileUtils.touch "#{path}/Packages.gz"
+      packages_file = "#{path}/Packages"
+      FileUtils.touch packages_file
+      gzip packages_file
+    end
+
+    def gzip(file)
+      gzip_file = "#{File.dirname(file)}/#{File.basename(file)}.gz"
+      Zlib::GzipWriter.open(gzip_file) do |gz|
+        gz.mtime = File.mtime(file)
+        gz.orig_name = file
+        gz.write IO.binread(file)
+      end
     end
 
     def suppository

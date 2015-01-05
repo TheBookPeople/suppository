@@ -7,6 +7,7 @@ require 'suppository/release'
 require 'fileutils'
 require 'digest'
 require 'zlib'
+require 'English'
 
 module Suppository
   class AddCommand
@@ -26,8 +27,7 @@ module Suppository
       create_suppository_file
       create_dist_file suppository_file
 
-      release_info = Suppository::Release.new(@repository.path, @dist).content
-      open("#{dist_path}/Release", 'w') { |f| f.puts release_info }
+      Suppository::Release.new(@repository.path, @dist).create
     end
 
     private

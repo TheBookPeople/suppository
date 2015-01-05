@@ -6,6 +6,16 @@ module Suppository
       @dist_path = "#{repo_path}/dists/#{dist}"
     end
 
+    def create
+      release_file = "#{@dist_path}/Release"
+      open(release_file, 'w') { |f| f.puts content }
+      `which gpg`
+      fail(MissingDependencyError, "'gpg' was not found.") unless $CHILD_STATUS.success?
+      `gpg -abs -o #{release_file}.gpg #{release_file}`
+    end
+
+    private
+
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def content
       result = "Codename: #{@dist}\n"

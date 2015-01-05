@@ -1,4 +1,5 @@
 require 'suppository/exceptions'
+require 'suppository/dpkg_deb'
 
 module Suppository
   class MasterDeb

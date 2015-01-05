@@ -4,6 +4,9 @@ require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'
 require 'suppository/package'
+require 'fileutils'
+require 'digest'
+require 'zlib'
 
 module Suppository
   class AddCommand

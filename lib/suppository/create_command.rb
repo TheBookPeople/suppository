@@ -1,6 +1,8 @@
 require 'rubygems'
 require 'suppository/tty'
 require 'suppository/repository'
+require 'fileutils'
+require 'zlib'
 
 module Suppository
   class CreateCommand

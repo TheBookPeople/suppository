@@ -9,9 +9,9 @@ describe Suppository::AddCommand do
     
   before(:each) do
     repository_path = "/tmp/supposotory_test_#{Time.now.to_f}/"
+    @file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
     @repository = Suppository::Repository.new(repository_path)
     Suppository::CreateCommand.new([@repository.path]).run
-    FakeFS::FileSystem.clone(deb_file)
     @dist = 'trusty'
     @component = 'internal'
     @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
@@ -23,8 +23,7 @@ describe Suppository::AddCommand do
   
   it "adds package to the supposotory" do  
     @adder.run
-    file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
-    expect(File.file?("#{@repository.suppository}/#{file_name}")).to be_truthy
+     expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
   end
   
   it "adds package to dists" do  
@@ -39,6 +38,37 @@ describe Suppository::AddCommand do
       end
     end
   end
+  
+  it "updates Packages file" do  
+    supository_file = "#{@repository.suppository}/#{@file_name}"
+    @adder.run
+     @repository.archs.each do |arch|
+       path = "#{@repository.path}dists/#{@dist}/#{@component}/binary-#{arch}/"
+       packages_path = "#{path}/Packages"
+       deb = Suppository::MasterDeb.new(supository_file)
+       content = Suppository::Package.new(deb).content
+       expect(File.read(packages_path)).to match content
+     end
+  end
+  
+  it "updates Packages.gz file" do  
+    supository_file = "#{@repository.suppository}/#{@file_name}"
+    @adder.run
+     @repository.archs.each do |arch|
+       path = "#{@repository.path}dists/#{@dist}/#{@component}/binary-#{arch}/"
+       packages_path = "#{path}/Packages.gz"
+       deb = Suppository::MasterDeb.new(supository_file)
+       content = Suppository::Package.new(deb).content
+       result =""
+       Zlib::GzipReader.open(packages_path) {|gz|
+         result << gz.read
+       }
+       
+       expect(result).to match content
+     end
+  end
+  
+ 
   
   it "cant add package to new dists" do  
     @adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, deb_file])

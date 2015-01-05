@@ -48,7 +48,7 @@ Homebrew (see http://brew.sh/ on how to install Homebrew)
 The default rake task will run code quality checks and all the tests.
  
     $ bundle install
-	$ bundle execute rake
+	$ bundle exec rake
 
 If you want to automatically run the tests during development, you can use Guard. Guard will watch for file changes
 and run the appropriate tests. See https://github.com/guard/guard for more information on guard

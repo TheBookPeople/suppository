@@ -40,20 +40,19 @@ module Suppository
 
     def create_dist_file(master_file)
       @repository.archs.each do |arch|
-        FileUtils.ln_s master_file, dist_file(arch)      
+        FileUtils.ln_s master_file, dist_file(arch)
         update_packages master_file, arch
       end
     end
-    
+
     def update_packages(master_file, arch)
       deb = Suppository::MasterDeb.new(master_file)
       file = package_file(arch)
-      open(file, 'a') { |f|
-        f.puts Suppository::Package.new(deb).content
-      }
+      package_info = Suppository::Package.new(deb).content
+      open(file, 'a') { |f| f.puts package_info }
       gzip file
     end
-    
+
     def gzip(file)
       gz_file = "#{file}.gz"
       Zlib::GzipWriter.open(gz_file) do |gz|
@@ -67,11 +66,11 @@ module Suppository
       filename = Suppository::Deb.new(@deb).filename
       "#{component_path}/binary-#{arch}/#{filename}"
     end
-    
+
     def package_file(arch)
       "#{component_path}/binary-#{arch}/Packages"
     end
-    
+
     def suppository_file
       "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
     end

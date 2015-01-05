@@ -2,7 +2,8 @@ require 'suppository/dpkg_deb'
 
 module Suppository
   class Deb
-    
+    attr_reader :dirname
+
     def initialize(path)
       @dirname = File.dirname(path)
       @attr = Suppository::DpkgDeb.new(path).attibutes
@@ -10,10 +11,6 @@ module Suppository
 
     def filename
       "#{@attr['package']}_#{@attr['version']}_#{@attr['architecture']}.deb"
-    end
-    
-    def dirname
-      @dirname
     end
 
     def method_missing(method_sym, *arguments, &block)

@@ -13,8 +13,8 @@ module Suppository
       result << "Maintainer: #{@deb.maintainer}\n"
       result << "Installed-Size: #{@deb.installed_size}\n"
       result << "Filename: #{filename}\n"
-      result << "Size: #{@deb.size}\n" if defined?(@deb.size) 
-      result << "MD5sum: #{@deb.md5sum}\n" 
+      result << "Size: #{@deb.size}\n" if defined?(@deb.size)
+      result << "MD5sum: #{@deb.md5sum}\n"
       result << "SHA1: #{@deb.sha1}\n"
       result << "SHA256: #{@deb.sha256}\n"
       result << "Section: #{@deb.section}\n"

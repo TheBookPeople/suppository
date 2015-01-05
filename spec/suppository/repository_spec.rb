@@ -15,6 +15,11 @@ describe Suppository::Repository do
     expect(@repository.path).to eql "/tmp/repo123"
   end
   
+  it "converts relative path to absolute" do
+    repository = Suppository::Repository.new("./repo123")
+    expect(repository.path).to eql File.expand_path('./repo123')
+  end
+  
   it "has a dists" do
     expect(@repository.dists).to eql @dists
   end

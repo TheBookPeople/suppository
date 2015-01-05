@@ -43,7 +43,7 @@ describe Suppository::CreateCommand do
     @creator.run
     @repository.dists.each do |dist|
       @repository.archs.each do |arch|
-        file_name = "#{@repository.path}dists/#{dist}/internal/binary-#{arch}/Packages.gz"     
+        file_name = "#{@repository.path}/dists/#{dist}/internal/binary-#{arch}/Packages.gz"     
         expect(Zlib::GzipReader.open(file_name)).to be_truthy
       end
     end

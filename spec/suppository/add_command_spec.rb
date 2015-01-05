@@ -44,7 +44,7 @@ describe Suppository::AddCommand do
     @adder.run
      @repository.archs.each do |arch|
        internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
-       path = "#{@repository.path}#{internal_path}"
+       path = "#{@repository.path}/#{internal_path}"
        packages_path = "#{path}/Packages"
        deb = Suppository::MasterDeb.new(supository_file)
        content = Suppository::Package.new(internal_path, deb).content
@@ -57,7 +57,7 @@ describe Suppository::AddCommand do
     @adder.run
      @repository.archs.each do |arch|
        internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
-       path = "#{@repository.path}#{internal_path}"
+       path = "#{@repository.path}/#{internal_path}"
        packages_path = "#{path}/Packages.gz"
        deb = Suppository::MasterDeb.new(supository_file)
        content = Suppository::Package.new(internal_path,deb).content

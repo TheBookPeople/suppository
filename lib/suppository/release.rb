@@ -19,9 +19,7 @@ module Suppository
       result << "Date: #{Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')}\n"
       packages = Dir.glob("#{@dist_path}/*/*/Packages*")
       result << "MD5Sum:\n"
-      packages.each do |f|
-        result << puts_hash(f, Digest::MD5.file(f))
-      end
+      packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
       result << "SHA1:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
       result << "SHA256:\n"

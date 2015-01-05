@@ -57,7 +57,7 @@ and run the appropriate tests. See https://github.com/guard/guard for more infor
 
 ### Create Gem
 
-    $ bundle exec build	
+    $ bundle exec rake build	
 
 This will run all the tests and then create a gem file. NOTE: Only files tracked by Git will be included in the gem.
 

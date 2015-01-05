@@ -60,7 +60,7 @@ module Suppository
         gz.write IO.read(file)
       end
     end
-    
+
     def dist_file(arch)
       filename = Suppository::MasterDeb.new(suppository_file).filename
       "#{component_path}/binary-#{arch}/#{filename}"
@@ -69,7 +69,7 @@ module Suppository
     def package_file(arch)
       "#{component_path}/binary-#{arch}/Packages"
     end
-    
+
     def internal_path(arch)
       "dists/#{@dist}/#{@component}/binary-#{arch}/"
     end

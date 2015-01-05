@@ -17,11 +17,11 @@ module Suppository
       @dirname = File.dirname(path)
       @attr = Suppository::DpkgDeb.new(path).attibutes
     end
-    
+
     def filename
       "#{@attr['package']}_#{@attr['version']}_#{@attr['architecture']}.deb"
     end
-    
+
     def method_missing(method_sym, *arguments, &block)
       value = @attr[method_sym.to_s]
       if value

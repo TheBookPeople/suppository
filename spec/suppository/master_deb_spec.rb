@@ -37,6 +37,9 @@ describe Suppository::MasterDeb do
       expect(@instance.sha256).to eql '5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555'
     end
 
+    it "size" do
+      expect(@instance.size).to eql 137640
+    end
   end
   
   

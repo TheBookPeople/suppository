@@ -5,6 +5,7 @@ require 'suppository/exceptions'
 require 'suppository/package'
 require 'suppository/release'
 require 'suppository/logger'
+require 'suppository/checksummed'
 require 'fileutils'
 require 'digest'
 require 'zlib'
@@ -20,7 +21,7 @@ module Suppository
       @repository = Suppository::Repository.new(args[0])
       @dist = args[1]
       @component = args[2]
-      @deb = args[3]
+      @debs = Dir.glob(args[3])
     end
 
     def run
@@ -28,15 +29,20 @@ module Suppository
       assert_dist_exists
       assert_component_exists
 
-      create_suppository_file
-      create_dist_file suppository_file
+      @debs.each { |deb| add_deb Suppository::Checksummed.new(deb) }
 
       Suppository::Release.new(@repository.path, @dist).create
-      message = "#{@deb} added to repository #{@repository.path}, #{@dist} #{@component}"
-      log_success message
     end
 
     private
+
+    def add_deb(deb)
+      create_suppository_file(deb)
+      create_dist_file(suppository_file(deb), deb)
+
+      message = "#{@deb} added to repository #{@repository.path}, #{@dist} #{@component}"
+      log_success message
+    end
 
     def assert_repository_exists
       message = "#{@repository.path} is not a valid repository.\n"
@@ -56,13 +62,13 @@ module Suppository
       fail InvalidComponent, message unless File.exist?("#{component_path}")
     end
 
-    def create_suppository_file
-      FileUtils.copy_file(@deb, suppository_file, true)
+    def create_suppository_file(deb)
+      FileUtils.copy_file(deb.path, suppository_file(deb), true)
     end
 
-    def create_dist_file(master_file)
+    def create_dist_file(master_file, deb)
       @repository.archs.each do |arch|
-        FileUtils.ln_s master_file, dist_file(arch), force: true
+        FileUtils.ln_s master_file, dist_file(arch, deb), force: true
         update_packages master_file, arch
       end
     end
@@ -84,8 +90,8 @@ module Suppository
       end
     end
 
-    def dist_file(arch)
-      filename = Suppository::MasterDeb.new(suppository_file).filename
+    def dist_file(arch, deb)
+      filename = Suppository::MasterDeb.new(suppository_file(deb)).filename
       "#{component_path}/binary-#{arch}/#{filename}"
     end
 
@@ -97,8 +103,8 @@ module Suppository
       "dists/#{@dist}/#{@component}/binary-#{arch}"
     end
 
-    def suppository_file
-      "#{suppository}/#{md5}_#{sha1}_#{sha2}.deb"
+    def suppository_file(deb)
+      "#{suppository}/#{deb.md5}_#{deb.sha1}_#{deb.sha2}.deb"
     end
 
     def dist_path
@@ -111,18 +117,6 @@ module Suppository
 
     def suppository
       @repository.suppository
-    end
-
-    def md5
-      @md5 ||= Digest::MD5.file(@deb).hexdigest
-    end
-
-    def sha1
-      @sha1 ||= Digest::SHA1.file(@deb).hexdigest
-    end
-
-    def sha2
-      @sha2 ||= Digest::SHA2.file(@deb).hexdigest
     end
   end
 end

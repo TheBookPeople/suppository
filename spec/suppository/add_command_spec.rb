@@ -10,6 +10,7 @@ describe Suppository::AddCommand do
   before(:each) do
     repository_path = "/tmp/supposotory_test_#{Time.now.to_f}"
     @file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
+    @second_file = '2f860ed12d2ad99bacc78d95fb9e7989_323ee30c17a0ca4bbb2b95032fc79f84f4ca26f2_66bce137768403d517468a1f70bd98644558cd000f250dd8cc2faeedda5d4b2f.deb'
     @repository = Suppository::Repository.new(repository_path)
     Suppository::CreateCommand.new([@repository.path]).run
     @dist = 'trusty'
@@ -17,9 +18,10 @@ describe Suppository::AddCommand do
     @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
   end
   
-  after(:each) do
-    FileUtils.rm_r @repository.path
-  end
+  # after(:each) do
+  #   FileUtils.rm_r @repository.path
+  # end
+  
   
   it "add suppository file" do  
     @adder.run
@@ -30,6 +32,13 @@ describe Suppository::AddCommand do
     @adder.run
     @adder.run
     expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+  end
+  
+  it "supports globs for deb file" do  
+    @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file_glob])
+    @adder.run
+    expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+    expect(File.file?("#{@repository.suppository}/#{@second_file}")).to be_truthy
   end
    
   it "adds package to dists" do  

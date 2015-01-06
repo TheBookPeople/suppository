@@ -47,5 +47,9 @@ def deb_file
   File.expand_path(File.dirname(__FILE__)+"../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
 end
 
+def deb_file_glob
+  File.expand_path(File.dirname(__FILE__)+"../../fixtures/*.deb")
+end
+
 
 

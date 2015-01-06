@@ -41,9 +41,8 @@ module Suppository
     end
 
     def puts_hash(f, hash)
-      relative = f.split('/')
-      (0..2).each { relative.shift }
-      sprintf(" %s %17d %s\n", hash, File.size(f), relative.join('/'))
+      relative = f.split(@dist_path).pop[1..-1]
+      sprintf(" %s %17d %s\n", hash, File.size(f), relative)
     end
   end
 end

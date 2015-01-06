@@ -1,3 +1,4 @@
+require 'English'
 
 module Suppository
   class Release

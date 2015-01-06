@@ -39,8 +39,8 @@ module Suppository
     def add_deb(deb)
       create_suppository_file(deb)
       create_dist_file(suppository_file(deb), deb)
-
-      message = "#{@deb} added to repository #{@repository.path}, #{@dist} #{@component}"
+      f = File.basename(deb.path)
+      message = "#{f} added to repository #{@repository.path}, #{@dist} #{@component}"
       log_success message
     end
 

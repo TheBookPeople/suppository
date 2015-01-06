@@ -1,4 +1,4 @@
-#!/bin/ruby -W0
+#!/usr/bin/env ruby
 # encoding: UTF-8
 # -*- mode: ruby -*-
 require_relative '../lib/suppository/cli'

@@ -23,6 +23,7 @@ module Suppository
       result << "Priority: #{@deb.priority}\n"
       result << "Homepage: #{@deb.homepage}\n" if defined?(@deb.homepage)
       result << "Description: #{@deb.description}\n"
+      result << "\n"
     end
 
     private

@@ -40,7 +40,7 @@ EOS
     expect(deb).to receive(:section) {'web'}
     expect(deb).to receive(:homepage) {'http://www.test.com/'}
     expect(deb).to receive(:priority) {'optional'}
-    expect(deb).to receive(:description) {"Get a file from an HTTP, HTTPS or FTP server curl is a client to get files from servers using any of the supported\n protocols. The command is designed to work without user interaction\n or any kind of interactivity.\n .\n curl offers a busload of useful tricks like proxy support, user\n authentication, FTP upload, HTTP post, file transfer resume and more.\n"}
+    expect(deb).to receive(:description) {"Get a file from an HTTP, HTTPS or FTP server curl is a client to get files from servers using any of the supported\n protocols. The command is designed to work without user interaction\n or any kind of interactivity.\n .\n curl offers a busload of useful tricks like proxy support, user\n authentication, FTP upload, HTTP post, file transfer resume and more."}
     expect(deb).to receive(:filename) {'curl_7.22.0-3ubuntu4.11_amd64.deb'}
     expect(deb).to receive(:md5sum) {'e5ca0a9797acda4bfe8404524f0976b3'}
     expect(deb).to receive(:sha1) {'b37ce9b17405d93c323c0b8bbe167c6f2dccfe02'}

@@ -6,7 +6,7 @@ require 'suppository/repository'
 describe Suppository::CreateCommand do
 
   before(:each) do
-    repository_path = "/tmp/supposotory_test_#{Time.now.to_f}/"
+    repository_path = "/tmp/suppository_test_#{Time.now.to_f}/"
     @repository = Suppository::Repository.new(repository_path)
     @creator = Suppository::CreateCommand.new([@repository.path])
   end

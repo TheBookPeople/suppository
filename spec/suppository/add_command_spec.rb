@@ -8,7 +8,7 @@ require 'suppository/exceptions'
 describe Suppository::AddCommand do
     
   before(:each) do
-    repository_path = "/tmp/supposotory_test_#{Time.now.to_f}/"
+    repository_path = "/tmp/suppository_test_#{Time.now.to_f}/"
     @file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
     @repository = Suppository::Repository.new(repository_path)
     Suppository::CreateCommand.new([@repository.path]).run

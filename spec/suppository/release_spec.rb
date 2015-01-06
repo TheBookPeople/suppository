@@ -5,7 +5,7 @@ require 'suppository/create_command'
 
 describe Suppository::Release do
 
-EXPECTED_CONTENT = <<-EOS
+RELEASE_CONTENT = <<-EOS
 Codename: lucid
 Architectures: amd64 i386
 Components: internal
@@ -48,7 +48,7 @@ EOS
   it "creates file"# , :focus=>true do
 #     @instance.create
 #     releases_path = "#{@repo_path}/dists/#{@dist}/Release"
-#     expect(File.read(releases_path)).to match EXPECTED_CONTENT
+#     expect(File.read(releases_path)).to match RELEASE_CONTENT
 #   end
   
 end

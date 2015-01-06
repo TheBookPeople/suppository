@@ -8,6 +8,7 @@ CodeClimate::TestReporter.start
 
 SimpleCov.start do
   SimpleCov.minimum_coverage 100
+  SimpleCov.add_filter "/spec/"
 end
 
 lib = File.expand_path('../lib', __FILE__)

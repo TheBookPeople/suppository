@@ -13,6 +13,7 @@ module Suppository
       result << "Architecture: #{@deb.architecture}\n"
       result << "Maintainer: #{@deb.maintainer}\n"
       result << "Installed-Size: #{@deb.installed_size}\n"
+      result << "Depends: #{@deb.depends}\n" if defined?(@deb.depends)
       result << "Filename: #{filename}\n"
       result << "Size: #{@deb.size}\n"
       result << "MD5sum: #{@deb.md5sum}\n"

@@ -20,6 +20,17 @@ describe Suppository::AddCommand do
   after(:each) do
     FileUtils.rm_r @repository.path
   end
+  
+  it "add suppository file" do  
+    @adder.run
+    expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+  end
+  
+  it "add the same package again" do  
+    @adder.run
+    @adder.run
+    expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+  end
    
   it "adds package to dists" do  
     @adder.run
@@ -33,6 +44,7 @@ describe Suppository::AddCommand do
       end
     end
   end
+   
   
   it "updates Packages file" do  
     supository_file = "#{@repository.suppository}/#{@file_name}"

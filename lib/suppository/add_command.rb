@@ -62,7 +62,7 @@ module Suppository
 
     def create_dist_file(master_file)
       @repository.archs.each do |arch|
-        FileUtils.ln_s master_file, dist_file(arch)
+        FileUtils.ln_s master_file, dist_file(arch), :force => true
         update_packages master_file, arch
       end
     end

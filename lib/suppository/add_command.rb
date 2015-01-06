@@ -4,6 +4,7 @@ require 'suppository/repository'
 require 'suppository/exceptions'
 require 'suppository/package'
 require 'suppository/release'
+require 'suppository/logger'
 require 'fileutils'
 require 'digest'
 require 'zlib'
@@ -11,6 +12,8 @@ require 'English'
 
 module Suppository
   class AddCommand
+    include Suppository::Logger
+
     def initialize(args)
       fail UsageError if args.nil? || args.length != 4
 
@@ -21,6 +24,7 @@ module Suppository
     end
 
     def run
+      assert_repository_exists
       assert_dist_exists
       assert_component_exists
 
@@ -28,12 +32,23 @@ module Suppository
       create_dist_file suppository_file
 
       Suppository::Release.new(@repository.path, @dist).create
+      message = "#{@deb} added to repository #{@repository.path}, #{@dist} #{@component}"
+      log_success message
     end
 
     private
 
+    def assert_repository_exists
+      message = "#{@repository.path} is not a valid repository.\n"
+      message << "You can create a new repository by running the following command\n"
+      message << "   suppository create #{@repository.path}"
+      fail InvalidRepositoryError, message  unless @repository.exist?
+    end
+
     def assert_dist_exists
-      fail InvalidDistribution unless File.exist?("#{dist_path}")
+      supported_dist = @repository.dists.join(', ')
+      message = "#{@dist} is not a supported, try one of the following #{supported_dist}"
+      fail InvalidDistribution, message  unless File.exist?("#{dist_path}")
     end
 
     def assert_component_exists
@@ -78,7 +93,7 @@ module Suppository
     end
 
     def internal_path(arch)
-      "dists/#{@dist}/#{@component}/binary-#{arch}/"
+      "dists/#{@dist}/#{@component}/binary-#{arch}"
     end
 
     def suppository_file

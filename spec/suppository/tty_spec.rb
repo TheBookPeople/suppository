@@ -4,16 +4,16 @@ require 'suppository/tty'
 
 describe Suppository::Tty do
   
-  describe 'blue' do
+  describe 'gray' do
   
     it "Outputs returns nothing if not running in tty" do    
       expect($stdout).to receive(:tty?).and_return(false)
-      expect(Suppository::Tty.blue).to be_nil
+      expect(Suppository::Tty.gray).to be_nil
     end
   
     it "Returns if running in tty" do    
       expect($stdout).to receive(:tty?).and_return(true)
-      expect(Suppository::Tty.blue).to eql "\e[1;34m"
+      expect(Suppository::Tty.gray).to eql "\e[1;30m"
     end
   
   end
@@ -86,26 +86,7 @@ describe Suppository::Tty do
       expect(Suppository::Tty.em).to eql "\e[4;39m"
     end
   
-  end
-  
-  describe 'on_error' do
-    
-    it "print errors to standard error" do    
-      expect($stdout).to receive(:tty?).twice.and_return(false)
-      expect($stderr).to receive(:puts).with("Error: Boom")
-      Suppository::Tty.on_error "Boom"
-    end
-  
-    it "adds colour if running on tty" do    
-      expect($stdout).to receive(:tty?).twice.and_return(true)
-      expect($stderr).to receive(:puts).with("\e[4;31mError\e[0m: Boom")
-      Suppository::Tty.on_error "Boom"
-    end
-  
-  end
-  
-  
-  
+  end 
 end
   
   

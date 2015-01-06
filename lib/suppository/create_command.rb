@@ -1,5 +1,5 @@
 require 'rubygems'
-require 'suppository/tty'
+require 'suppository/logger'
 require 'suppository/repository'
 require 'suppository/exceptions'
 require 'fileutils'
@@ -7,6 +7,8 @@ require 'zlib'
 
 module Suppository
   class CreateCommand
+    include Suppository::Logger
+
     def initialize(args)
       assert_arguments args
       @repository = repository(args[0])
@@ -29,13 +31,13 @@ module Suppository
     end
 
     def assert_not_created
-      File.exist?(suppository) ? fail("#{path} is already a repository") : ''
+      @repository.exist? ? fail("#{path} is already a repository") : ''
     end
 
     def create_repository
       FileUtils.mkdir_p "#{suppository}"
       create_dists_folders
-      Tty.on_success "Created new Repository - #{path}"
+      log_success "Created new Repository - #{path}"
     end
 
     def create_dists_folders

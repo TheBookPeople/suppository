@@ -1,8 +1,8 @@
 module Suppository
   class Tty
     class << self
-      def blue
-        bold 34
+      def gray
+        bold 30
       end
 
       def white
@@ -23,14 +23,6 @@ module Suppository
 
       def em
         underline 39
-      end
-
-      def on_error(error)
-        $stderr.puts "#{Tty.red}Error#{Tty.reset}: #{error}"
-      end
-
-      def on_success(message)
-        puts "#{Tty.green}==>#{Tty.white} #{message}#{Tty.reset}"
       end
 
       private

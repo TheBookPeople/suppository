@@ -8,5 +8,9 @@ module Suppository
       @archs = %w(amd64 i386)
       @suppository = "#{@path}/.suppository"
     end
+
+    def exist?
+      File.exist? @suppository
+    end
   end
 end

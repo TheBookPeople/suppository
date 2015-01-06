@@ -25,7 +25,7 @@ A RubyGem that can be used to manage a simple apt repository.
 
 ### Add Deb to existing repository
 
-    $ suppository add REPOSITORY DIST_NAME COMPONENT_NAME DEB_FILE
+    $ suppository add REPOSITORY_PATH DIST_NAME COMPONENT_NAME DEB_FILE
 
 ## Build
 
@@ -39,10 +39,16 @@ RubyGems
 
 #### OSX
 
-If you are developing on a Mac the you will need to install dpkg for the tests to pass. The simplest way to install it is with 
+If you are developing on a Mac the you will need to install dpkg and gpg for the tests to pass. The simplest way to install it is with 
 Homebrew (see http://brew.sh/ on how to install Homebrew)
 
     $ brew install dpkg
+	$ brew install gpg
+
+#### Ubuntu / Debian 
+
+dpkg will already be installed but you might need to install gpg.
+ 
 
 ### Run tests
 The default rake task will run code quality checks and all the tests.

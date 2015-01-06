@@ -12,3 +12,6 @@ end
 
 class InvalidMasterDeb < RuntimeError
 end
+
+class InvalidRepositoryError < RuntimeError
+end

@@ -10,6 +10,10 @@ describe Suppository::Repository do
     @archs = %w(amd64 i386)
     @suppository ="/tmp/repo123/.suppository"
   end
+  
+  after(:each) do
+    FileUtils.rm_r @repository.path if File.exist? @repository.path
+  end
 
   it "has a path" do
     expect(@repository.path).to eql "/tmp/repo123"
@@ -30,6 +34,18 @@ describe Suppository::Repository do
   
   it "has a suppository" do
     expect(@repository.suppository).to eql @suppository
+  end
+  
+  describe 'exist?' do
+  
+    it "false" do
+      expect(@repository.exist?).to be_falsy
+    end
+  
+    it "true" do
+      FileUtils.mkdir_p @suppository
+      expect(@repository.exist?).to be_truthy
+    end
   end
 
 

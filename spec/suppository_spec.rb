@@ -71,7 +71,7 @@ describe 'suppository binary' do
     it 'fails if arguments invalid' do 
       output = `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file}" 2>&1`
       expect($CHILD_STATUS.success?).to be_falsy
-      expect(output).to include 'InvalidDistribution'
+      expect(output).to include "Error: #{@repository_path} is not a valid repository"
     end
      
   end

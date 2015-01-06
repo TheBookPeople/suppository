@@ -11,7 +11,7 @@ describe Suppository::MasterDeb do
   end
   
   before(:each) do
-    @repository = Suppository::Repository.new "/tmp/supposotory_test_#{Time.now.to_f}/"
+    @repository = Suppository::Repository.new "/tmp/supposotory_test_#{Time.now.to_f}"
     master_deb_file = "#{@repository.suppository}/#{@valid_file_name}"
     FileUtils.mkdir_p @repository.suppository
     FileUtils.cp deb_file, master_deb_file 

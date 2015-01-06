@@ -27,7 +27,7 @@ module Suppository
     private
 
     def filename
-      "#{@parent_folder}#{@deb.filename}"
+      "#{@parent_folder}/#{@deb.filename}"
     end
   end
 end

@@ -12,7 +12,7 @@ module Suppository
       open(release_file, 'w') { |f| f.puts content }
       `which gpg`
       fail(MissingDependencyError, "'gpg' was not found.") unless $CHILD_STATUS.success?
-      `gpg -abs -o #{release_file}.gpg #{release_file}`
+      `gpg -abs -o #{release_file}.gpg #{release_file} 2>&1`
     end
 
     private

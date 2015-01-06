@@ -8,7 +8,7 @@ require 'suppository/exceptions'
 describe Suppository::AddCommand do
     
   before(:each) do
-    repository_path = "/tmp/suppository_test_#{Time.now.to_f}/"
+    repository_path = "/tmp/supposotory_test_#{Time.now.to_f}"
     @file_name = 'e5ca0a9797acda4bfe8404524f0976b3_b37ce9b17405d93c323c0b8bbe167c6f2dccfe02_5a315c56bc34f1ffed365f9aa50bbb36916e5a8fae8614f00d952983d4316555.deb'
     @repository = Suppository::Repository.new(repository_path)
     Suppository::CreateCommand.new([@repository.path]).run
@@ -20,12 +20,7 @@ describe Suppository::AddCommand do
   after(:each) do
     FileUtils.rm_r @repository.path
   end
-  
-  it "adds package to the supposotory" do  
-    @adder.run
-     expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
-  end
-  
+   
   it "adds package to dists" do  
     @adder.run
     @repository.dists.each do |dist|
@@ -43,7 +38,7 @@ describe Suppository::AddCommand do
     supository_file = "#{@repository.suppository}/#{@file_name}"
     @adder.run
      @repository.archs.each do |arch|
-       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
+       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
        path = "#{@repository.path}/#{internal_path}"
        packages_path = "#{path}/Packages"
        deb = Suppository::MasterDeb.new(supository_file)
@@ -56,7 +51,7 @@ describe Suppository::AddCommand do
     supository_file = "#{@repository.suppository}/#{@file_name}"
     @adder.run
      @repository.archs.each do |arch|
-       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}/"
+       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
        path = "#{@repository.path}/#{internal_path}"
        packages_path = "#{path}/Packages.gz"
        deb = Suppository::MasterDeb.new(supository_file)
@@ -92,6 +87,19 @@ describe Suppository::AddCommand do
     begin
       @adder.run
     rescue InvalidComponent
+      error = true
+    end
+    
+    expect(error).to be_truthy 
+  end
+  
+  it "cant add package to non existant repository" do  
+    @adder = Suppository::AddCommand.new(['boom', @dist, 'testing', deb_file])
+    
+    error = false
+    begin
+      @adder.run
+    rescue InvalidRepositoryError
       error = true
     end
     

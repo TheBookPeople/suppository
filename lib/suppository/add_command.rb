@@ -40,19 +40,20 @@ module Suppository
 
     def assert_repository_exists
       message = "#{@repository.path} is not a valid repository.\n"
-      message << "You can create a new repository by running the following command\n"
+      message << "You can create a new repository by running the following command\n\n"
       message << "   suppository create #{@repository.path}"
       fail InvalidRepositoryError, message  unless @repository.exist?
     end
 
     def assert_dist_exists
       supported_dist = @repository.dists.join(', ')
-      message = "#{@dist} is not a supported, try one of the following #{supported_dist}"
+      message = "#{@dist} does not exist, try one of the following #{supported_dist}"
       fail InvalidDistribution, message  unless File.exist?("#{dist_path}")
     end
 
     def assert_component_exists
-      fail InvalidComponent unless File.exist?("#{component_path}")
+      message = "#{@component} does not exist, try internal instead"
+      fail InvalidComponent, message unless File.exist?("#{component_path}")
     end
 
     def create_suppository_file

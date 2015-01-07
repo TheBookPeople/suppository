@@ -1,21 +1,36 @@
 require 'English'
+require 'rubygems'
+require 'suppository/exceptions'
+require 'fileutils'
 
 module Suppository
   class Release
-    def initialize(repo_path, dist)
+    def initialize(repo_path, dist, unsigned = false)
       @dist = dist
+      @unsigned = unsigned
       @dist_path = "#{repo_path}/dists/#{dist}"
     end
 
     def create
       release_file = "#{@dist_path}/Release"
       open(release_file, 'w') { |f| f.puts content }
+
+      return if @unsigned
+
       `which gpg`
-      fail(MissingDependencyError, "'gpg' was not found.") unless $CHILD_STATUS.success?
-      `gpg -abs -o #{release_file}.gpg #{release_file} 2>&1`
+      fail(MissingDependencyError, "'gpg' was not found.") unless command_worked
+
+      gpg_file = "#{release_file}.gpg"
+      FileUtils.rm_rf(gpg_file)
+      gpg_output = `gpg -abs -o #{gpg_file} #{release_file} 2>&1`
+      fail(GpgError, gpg_output) unless $CHILD_STATUS.success?
     end
 
     private
+
+    def command_worked
+      $CHILD_STATUS.success?
+    end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def content

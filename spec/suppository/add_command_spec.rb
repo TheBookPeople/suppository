@@ -2,6 +2,7 @@ require 'rubygems'
 require 'spec_helper'
 require 'suppository/add_command'
 require 'suppository/repository'
+require 'suppository/release'
 require 'suppository/create_command'
 require 'suppository/exceptions'
 
@@ -18,75 +19,83 @@ describe Suppository::AddCommand do
     @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
   end
   
-  # after(:each) do
-  #   FileUtils.rm_r @repository.path
-  # end
-  
-  
-  it "add suppository file" do  
-    @adder.run
-    expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+  after(:each) do
+    FileUtils.rm_r @repository.path
   end
   
   it "add the same package again" do  
+  	release = double(Suppository::Release)
+	  expect(release).to receive(:create).twice
+	  expect(Suppository::Release).to receive(:new).twice.with(@repository.path, @dist, false) { release }
     @adder.run
     @adder.run
     expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
   end
-  
-  it "supports globs for deb file" do  
-    @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file_glob])
-    @adder.run
-    expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
-    expect(File.file?("#{@repository.suppository}/#{@second_file}")).to be_truthy
-  end
-   
-  it "adds package to dists" do  
-    @adder.run
-    @repository.dists.each do |dist|
-      @repository.archs.each do |arch|
-        if dist == @dist
-          expect(File.file?("#{@repository.path}/dists/#{dist}/#{@component}/binary-#{arch}/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_truthy
-        else
-          expect(File.file?("#{@repository.path}/dists/#{dist}/#{@component}/binary-#{arch}/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_falsy
+
+  describe "expects release to work -" do
+    before(:each) do
+      release = double(Suppository::Release)
+      expect(release).to receive(:create)
+      expect(Suppository::Release).to receive(:new).with(@repository.path, @dist, false) { release }
+    end
+
+    it "add suppository file" do  
+      @adder.run
+      expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+    end
+
+    it "supports globs for deb file" do  
+      @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file_glob])
+      @adder.run
+      expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
+      expect(File.file?("#{@repository.suppository}/#{@second_file}")).to be_truthy
+    end
+
+    it "adds package to dists" do  
+      @adder.run
+      @repository.dists.each do |dist|
+        @repository.archs.each do |arch|
+          if dist == @dist
+            expect(File.file?("#{@repository.path}/dists/#{dist}/#{@component}/binary-#{arch}/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_truthy
+          else
+            expect(File.file?("#{@repository.path}/dists/#{dist}/#{@component}/binary-#{arch}/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_falsy
+          end
         end
       end
     end
+
+
+    it "updates Packages file" do  
+      supository_file = "#{@repository.suppository}/#{@file_name}"
+      @adder.run
+      @repository.archs.each do |arch|
+        internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
+        path = "#{@repository.path}/#{internal_path}"
+        packages_path = "#{path}/Packages"
+        deb = Suppository::MasterDeb.new(supository_file)
+        content = Suppository::Package.new(internal_path, deb).content
+        expect(File.read(packages_path)).to match content
+      end
+    end
+
+    it "updates Packages.gz file" do  
+      supository_file = "#{@repository.suppository}/#{@file_name}"
+      @adder.run
+      @repository.archs.each do |arch|
+        internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
+        path = "#{@repository.path}/#{internal_path}"
+        packages_path = "#{path}/Packages.gz"
+        deb = Suppository::MasterDeb.new(supository_file)
+        content = Suppository::Package.new(internal_path,deb).content
+        result =""
+        Zlib::GzipReader.open(packages_path) {|gz|
+          result << gz.read
+        }
+
+        expect(result).to match content
+      end
+    end
   end
-   
-  
-  it "updates Packages file" do  
-    supository_file = "#{@repository.suppository}/#{@file_name}"
-    @adder.run
-     @repository.archs.each do |arch|
-       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
-       path = "#{@repository.path}/#{internal_path}"
-       packages_path = "#{path}/Packages"
-       deb = Suppository::MasterDeb.new(supository_file)
-       content = Suppository::Package.new(internal_path, deb).content
-       expect(File.read(packages_path)).to match content
-     end
-  end
-  
-  it "updates Packages.gz file" do  
-    supository_file = "#{@repository.suppository}/#{@file_name}"
-    @adder.run
-     @repository.archs.each do |arch|
-       internal_path = "dists/#{@dist}/#{@component}/binary-#{arch}"
-       path = "#{@repository.path}/#{internal_path}"
-       packages_path = "#{path}/Packages.gz"
-       deb = Suppository::MasterDeb.new(supository_file)
-       content = Suppository::Package.new(internal_path,deb).content
-       result =""
-       Zlib::GzipReader.open(packages_path) {|gz|
-         result << gz.read
-       }
-       
-       expect(result).to match content
-     end
-  end
-  
- 
   
   it "cant add package to new dists" do  
     @adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, deb_file])

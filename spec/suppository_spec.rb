@@ -60,19 +60,24 @@ describe 'suppository binary' do
 
   describe 'add' do
       
-    it 'runs without error'  do 
+	it 'runs without error'  do 
       `"#{@cmd}" create #{@repository_path}`
-      `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file}"`
+      `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file}" --unsigned`
       expect($CHILD_STATUS.success?).to be_truthy
       expect(File.file?("#{@repository_path}/dists/trusty/internal/binary-amd64/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_truthy
       expect(File.file?("#{@repository_path}/dists/trusty/internal/binary-i386/curl_7.22.0-3ubuntu4.11_amd64.deb")).to be_truthy
     end 
     
     it 'fails if arguments invalid' do 
+      output = `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file} --unsigned" 2>&1`
+      expect($CHILD_STATUS.success?).to be_falsy
+      expect(output).to include "Error: #{@repository_path} is not a valid repository"
+    end
+ 
+ 	it 'fails if signing attempted (assumes no certificate)' do 
       output = `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file}" 2>&1`
       expect($CHILD_STATUS.success?).to be_falsy
       expect(output).to include "Error: #{@repository_path} is not a valid repository"
     end
-     
   end
 end

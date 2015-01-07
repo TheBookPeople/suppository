@@ -7,10 +7,10 @@ Example usage:
   suppository version
     - Display version
 
-  suppository create REPOSITORY_PATH
+  suppository create <REPOSITORY_PATH>
     - Create new empty repository in REPOSITORY_PATH
 
-  suppository add REPOSITORY_PATH DIST COMPONENT DEB_FILE
+  suppository add <REPOSITORY_PATH> <DIST> <COMPONENT> <DEB_FILE> [--unsigned]
     - Add DEB_FILE to DIST and COMPONENT of repository at REPOSITORY_PATH
 
 EOS

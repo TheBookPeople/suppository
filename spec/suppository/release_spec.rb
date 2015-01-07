@@ -45,10 +45,11 @@ EOS
     FileUtils.rm_r @repo_path if File.exist? @repo_path
   end
   
-  it "creates file"# , :focus=>true do
-#     @instance.create
-#     releases_path = "#{@repo_path}/dists/#{@dist}/Release"
-#     expect(File.read(releases_path)).to match RELEASE_CONTENT
-#   end
-  
+  it "creates file" do # , :focus=>true do
+     expect { @instance.create }.to raise_error(GpgError)
+     releases_path = "#{@repo_path}/dists/#{@dist}/Release"
+     # expect(File.read(releases_path)).to match RELEASE_CONTENT
+     expect(File.exists?(releases_path)).to eql true
+  end
+
 end

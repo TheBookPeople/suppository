@@ -16,8 +16,7 @@ module Suppository
     include Suppository::Logger
 
     def initialize(args)
-      fail UsageError if args.nil? || args.length != 4
-
+      @unsigned = parse_params(args)
       @repository = Suppository::Repository.new(args[0])
       @dist = args[1]
       @component = args[2]
@@ -31,10 +30,16 @@ module Suppository
 
       @debs.each { |deb| add_deb Suppository::Checksummed.new(deb) }
 
-      Suppository::Release.new(@repository.path, @dist).create
+      Suppository::Release.new(@repository.path, @dist, @unsigned).create
     end
 
     private
+
+    def parse_params(args)
+      fail UsageError if args.nil? || args.length < 4 || args.length > 5
+      fail UsageError if args.length == 5 && args[4] != '--unsigned'
+      args.length == 5
+    end
 
     def add_deb(deb)
       create_suppository_file(deb)

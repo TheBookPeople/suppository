@@ -13,5 +13,8 @@ end
 class InvalidMasterDeb < RuntimeError
 end
 
+class GpgError < RuntimeError
+end
+
 class InvalidRepositoryError < RuntimeError
 end

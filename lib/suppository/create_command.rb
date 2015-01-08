@@ -1,9 +1,9 @@
 require 'rubygems'
+require 'fileutils'
 require 'suppository/logger'
 require 'suppository/repository'
 require 'suppository/exceptions'
-require 'fileutils'
-require 'zlib'
+require 'suppository/gzip'
 
 module Suppository
   class CreateCommand
@@ -61,16 +61,7 @@ module Suppository
     def create_packages_file(path)
       packages_file = "#{path}/Packages"
       FileUtils.touch packages_file
-      gzip packages_file
-    end
-
-    def gzip(file)
-      gzip_file = "#{File.dirname(file)}/#{File.basename(file)}.gz"
-      Zlib::GzipWriter.open(gzip_file) do |gz|
-        gz.mtime = File.mtime(file)
-        gz.orig_name = file
-        gz.write IO.binread(file)
-      end
+      Suppository::Gzip.compress packages_file
     end
 
     def suppository

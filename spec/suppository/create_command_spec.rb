@@ -50,7 +50,7 @@ describe Suppository::CreateCommand do
   end
 
 
-  it "aborts if file supository already exists" do
+  it "aborts if file suppository already exists" do
     FileUtils.mkdir_p @repository.suppository
     expect(get_exception{@creator.run}).to eql "#{@repository.path} is already a repository"
   end

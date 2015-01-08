@@ -6,10 +6,8 @@ require 'suppository/package'
 require 'suppository/release'
 require 'suppository/logger'
 require 'suppository/checksummed'
+require 'suppository/gzip'
 require 'fileutils'
-require 'digest'
-require 'zlib'
-require 'English'
 
 module Suppository
   class AddCommand
@@ -83,16 +81,7 @@ module Suppository
       file = package_file(arch)
       package_info = Suppository::Package.new(internal_path(arch), deb).content
       open(file, 'a') { |f| f.puts package_info }
-      gzip file
-    end
-
-    def gzip(file)
-      gz_file = "#{file}.gz"
-      Zlib::GzipWriter.open(gz_file) do |gz|
-        gz.mtime = File.mtime(file)
-        gz.orig_name = file
-        gz.write IO.read(file)
-      end
+      Suppository::Gzip.compress file
     end
 
     def dist_file(arch, deb)

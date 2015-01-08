@@ -65,25 +65,15 @@ describe Suppository::CreateCommand do
   end
   
   it "needs non nil arguments" do  
-    error = false
-    begin
-     @adder = Suppository::CreateCommand.new(nil)
-    rescue UsageError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    expect { 
+      Suppository::CreateCommand.new(nil)
+    }.to raise_error(UsageError)
   end
   
   it "needs arguments" do  
-    error = false
-    begin
-     @adder = Suppository::CreateCommand.new([])
-    rescue UsageError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    expect { 
+      Suppository::CreateCommand.new([])
+    }.to raise_error(UsageError)
   end
 
 end

@@ -35,25 +35,15 @@ describe Suppository::CLI do
   end
   
   it "rase usage error for empty args" do
-    usage_error = false
-    begin
+    expect { 
       Suppository::CLI.run([])
-    rescue UsageError
-      usage_error = true
-    end
-    
-    expect(usage_error).to be_truthy 
+    }.to raise_error(UsageError)
   end
   
   it "rase usage error for invalid command" do
-    usage_error = false
-    begin
+    expect { 
       Suppository::CLI.run(['bla'])
-    rescue UsageError
-      usage_error = true
-    end
-    
-    expect(usage_error).to be_truthy 
+    }.to raise_error(UsageError)
   end
 end
   

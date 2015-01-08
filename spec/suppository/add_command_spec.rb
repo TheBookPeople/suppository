@@ -98,75 +98,43 @@ describe Suppository::AddCommand do
   end
   
   it "cant add package to new dists" do  
-    @adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, deb_file])
-    
-    error = false
-    begin
-      @adder.run
-    rescue InvalidDistribution
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    adder = Suppository::AddCommand.new([@repository.path, 'new_dist', @component, deb_file]) 
+    expect { 
+     adder.run
+    }.to raise_error(InvalidDistribution)
   end
   
   it "cant add package to new component" do  
-    @adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing', deb_file])
-    
-    error = false
-    begin
-      @adder.run
-    rescue InvalidComponent
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing', deb_file])
+    expect { 
+      adder.run
+    }.to raise_error(InvalidComponent)
   end
   
-  it "cant add package to non existant repository" do  
-    @adder = Suppository::AddCommand.new(['boom', @dist, 'testing', deb_file])
-    
-    error = false
-    begin
-      @adder.run
-    rescue InvalidRepositoryError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+  it "cant add package to non existant repository" do 
+    adder = Suppository::AddCommand.new(['boom', @dist, 'testing', deb_file])
+  
+    expect { 
+      adder.run
+     }.to raise_error(InvalidRepositoryError)
   end
   
   it "needs non nil arguments" do  
-    error = false
-    begin
-     @adder = Suppository::AddCommand.new(nil)
-    rescue UsageError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    expect { 
+      Suppository::AddCommand.new(nil)
+    }.to raise_error(UsageError)
   end
   
   it "needs arguments" do  
-    error = false
-    begin
-     @adder = Suppository::AddCommand.new([])
-    rescue UsageError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    expect { 
+      Suppository::AddCommand.new([])
+    }.to raise_error(UsageError)
   end
 
   it "needs four arguments" do  
-    error = false
-    begin
-     @adder = Suppository::AddCommand.new([@repository.path, @dist, 'testing'])
-    rescue UsageError
-      error = true
-    end
-    
-    expect(error).to be_truthy 
+    expect { 
+      Suppository::AddCommand.new([@repository.path, @dist, 'testing'])
+    }.to raise_error(UsageError)
   end
 
 end

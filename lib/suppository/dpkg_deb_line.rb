@@ -1,6 +1,6 @@
 module Suppository
   class DpkgDebLine
-    DESCRIPTION_FIELD = 'description'
+    DESCRIPTION_FIELD = 'Description'
 
     attr_reader :attributes
 
@@ -9,7 +9,7 @@ module Suppository
       if description?(line)
         @attributes = { DESCRIPTION_FIELD => line }
       elsif field
-        @attributes = { camel_case(field['fieldname']) => field['fieldvalue'] }
+        @attributes = { field['fieldname'] => field['fieldvalue'] }
       else
         fail "can't parse line - '#{line}'"
       end
@@ -23,10 +23,6 @@ module Suppository
 
     def description?(line)
       /^ .+$/.match(line)
-    end
-
-    def camel_case(string)
-      string.gsub('-', '_').downcase
     end
   end
 end

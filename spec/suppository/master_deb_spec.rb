@@ -72,7 +72,7 @@ describe Suppository::MasterDeb do
   end
 
   it "gets attribute by method" do
-    expect(@instance.package).to eql 'curl'
+    expect(@instance.full_attr['Package']).to eql 'curl'
   end
   
   it "fails with invalid attribute" do
@@ -83,14 +83,6 @@ describe Suppository::MasterDeb do
        error = true
     end
     expect(error).to be_truthy
-  end
-  
-  it "respond_to?" do
-    expect(@instance.respond_to?(:package)).to be_truthy
-  end
-  
-  it "respond_to? false" do
-    expect(@instance.respond_to?(:boom)).to be_falsey
   end
   
   it "filename" do

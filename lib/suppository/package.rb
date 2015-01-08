@@ -6,30 +6,14 @@ module Suppository
       @parent_folder = parent_folder
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def content
-      result = "Package: #{@deb.package}\n"
-      result << "Version: #{@deb.version}\n"
-      result << "Architecture: #{@deb.architecture}\n"
-      result << "Maintainer: #{@deb.maintainer}\n"
-      result << "Installed-Size: #{@deb.installed_size}\n"
-      result << "Depends: #{@deb.depends}\n" if defined?(@deb.depends)
-      result << "Filename: #{filename}\n"
-      result << "Size: #{@deb.size}\n"
-      result << "MD5sum: #{@deb.md5sum}\n"
-      result << "SHA1: #{@deb.sha1}\n"
-      result << "SHA256: #{@deb.sha256}\n"
-      result << "Section: #{@deb.section}\n"
-      result << "Priority: #{@deb.priority}\n"
-      result << "Homepage: #{@deb.homepage}\n" if defined?(@deb.homepage)
-      result << "Description: #{@deb.description}\n"
-      result << "\n"
+      @deb.full_attr.to_a.map { |kv_pair| kv_pair.join(': ') }.push("\n").join("\n")
     end
 
-    private
+    # private
 
-    def filename
-      "#{@parent_folder}/#{@deb.filename}"
-    end
+    # def filename
+    #  "#{@parent_folder}/#{@deb.filename}"
+    # end
   end
 end

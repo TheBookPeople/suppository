@@ -20,28 +20,21 @@ module Suppository
     end
 
     def filename
-      "#{@attr['package']}_#{@attr['version']}_#{@attr['architecture']}.deb"
+      "#{@attr['Package']}_#{@attr['Version']}_#{@attr['Architecture']}.deb"
+    end
+
+    def full_attr
+      full_attrs = @attr
+      full_attrs['Size'] = size
+      full_attrs['Filename'] = filename
+      full_attrs['MD5Sum'] = @md5sum
+      full_attrs['SHA1'] = @sha1
+      full_attrs['SHA256'] = @sha256
+      full_attrs
     end
 
     def size
       File.size(@path)
-    end
-
-    def method_missing(method_sym, *arguments, &block)
-      value = @attr[method_sym.to_s]
-      if value
-        value
-      else
-        super
-      end
-    end
-
-    def respond_to?(method_sym, include_private = false)
-      if @attr[method_sym.to_s]
-        true
-      else
-        super
-      end
     end
 
     private

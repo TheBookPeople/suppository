@@ -7,14 +7,14 @@ end
 class InvalidComponent < RuntimeError
 end
 
-class MissingDependencyError < RuntimeError
+class CommandMissingError < RuntimeError
 end
 
 class InvalidMasterDeb < RuntimeError
 end
 
-class GpgError < RuntimeError
+class InvalidRepositoryError < RuntimeError
 end
 
-class InvalidRepositoryError < RuntimeError
+class CommandError < RuntimeError
 end

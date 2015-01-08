@@ -1,11 +1,14 @@
+require 'rubygems'
 require 'suppository/dpkg_deb_line'
+require 'suppository/command_runner'
 
 module Suppository
   class DpkgDeb
     attr_reader :attibutes
 
     def initialize(deb_path)
-      @attibutes = parser(`dpkg-deb -f #{deb_path}`)
+      command = CommandRunner.new('dpkg-deb', "-f #{deb_path}")
+      @attibutes = parser(command.run)
     end
 
     private

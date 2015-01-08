@@ -37,19 +37,34 @@ EOS
   before(:each) do
     @repo_path = "/tmp/suppository_test_#{Time.now.to_f}"
     @dist = 'lucid'
-    @instance = Suppository::Release.new(@repo_path, @dist)
+    @instance = Suppository::Release.new(@repo_path, @dist, true)
     Suppository::CreateCommand.new([@repo_path]).run
-  end
+    @release_file = "#{@repo_path}/dists/#{@dist}/Release"
+    @release_file_gpg = "#{@release_file}.gpg"
+   end
   
   after(:each) do
     FileUtils.rm_r @repo_path if File.exist? @repo_path
   end
-  
-  it "creates file" do # , :focus=>true do
-     expect { @instance.create }.to raise_error(GpgError)
-     releases_path = "#{@repo_path}/dists/#{@dist}/Release"
-     # expect(File.read(releases_path)).to match RELEASE_CONTENT
-     expect(File.exists?(releases_path)).to eql true
-  end
 
+  it "creates file" do 
+     @instance.create
+     expect(File.exists?(@release_file)).to eql true
+  end
+  
+  it "unsigned" do 
+     @instance.create
+     expect(File.exists?(@release_file_gpg)).to eql false
+  end
+  
+  it "signed" do 
+    command_runner = double(Suppository::CommandRunner)
+    args = "-abs -o #{@release_file_gpg} #{@release_file}"
+    expect(Suppository::CommandRunner).to receive(:new).with('gpg',args) {command_runner}
+    expect(command_runner).to receive(:run) {FileUtils.touch(@release_file_gpg)}
+   
+    @instance = Suppository::Release.new(@repo_path, @dist)
+    @instance.create
+    expect(File.exists?(@release_file_gpg)).to eql true
+  end
 end

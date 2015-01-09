@@ -7,13 +7,17 @@ module Suppository
     end
 
     def content
-      @deb.full_attr.to_a.map { |kv_pair| kv_pair.join(': ') }.push("\n").join("\n")
+      full_attrs = @deb.full_attr
+      full_attrs[:Filename] = filename
+      full_attrs.sort_by { |k, _v| k == 'Description' ? 1 : 0 }
+        .to_a.map { |kv_pair| kv_pair.join(': ') }
+        .join("\n") << "\n\n"
     end
 
-    # private
+    private
 
-    # def filename
-    #  "#{@parent_folder}/#{@deb.filename}"
-    # end
+    def filename
+      "#{@parent_folder}/#{@deb.filename}"
+    end
   end
 end

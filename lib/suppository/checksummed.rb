@@ -1,3 +1,6 @@
+
+require 'digest'
+
 module Suppository
   class Checksummed
     attr_reader :path

@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'spec_helper'
 require 'suppository/release'
 require 'suppository/create_command'

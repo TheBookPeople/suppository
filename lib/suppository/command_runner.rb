@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'suppository/exceptions'
 
 module Suppository

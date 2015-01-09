@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'

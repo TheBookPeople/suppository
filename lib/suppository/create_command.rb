@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'fileutils'
 require 'suppository/logger'
 require 'suppository/repository'

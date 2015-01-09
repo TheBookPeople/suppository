@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'suppository/dpkg_deb_line'
 require 'suppository/command_runner'
 

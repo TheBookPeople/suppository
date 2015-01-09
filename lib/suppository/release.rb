@@ -1,5 +1,5 @@
 require 'English'
-require 'rubygems'
+
 require 'suppository/exceptions'
 require 'suppository/command_runner'
 require 'fileutils'

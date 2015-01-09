@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'spec_helper'
 require 'suppository/master_deb'
 require 'suppository/dpkg_deb'

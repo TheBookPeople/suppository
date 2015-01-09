@@ -1,4 +1,4 @@
-require 'rubygems'
+
 require 'spec_helper'
 require 'suppository/command_runner'
 require 'suppository/exceptions'

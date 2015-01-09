@@ -1,4 +1,4 @@
-require 'rubygems'
+
 
 module Suppository
   class VersionCommand

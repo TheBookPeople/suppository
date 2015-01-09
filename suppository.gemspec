@@ -6,8 +6,8 @@ require 'suppository/version'
 Gem::Specification.new do |spec|
   spec.name          = "suppository"
   spec.version       = Suppository::VERSION
-  spec.authors       = ["William Griffiths"]
-  spec.email         = ["william.griffiths@thebookpeople.co.uk"]
+  spec.authors       = ["William Griffiths", "Luke Farrar"]
+  spec.email         = ["william.griffiths@thebookpeople.co.uk", "luke.farrar@thebookpeople.co.uk"]
   spec.summary       = %q{Super Simple Apt Repository Manager}
   spec.description   = %q{A utility for creating and managing simple apt repositories.}
   spec.homepage      = "https://github.com/TheBookPeople/suppository"

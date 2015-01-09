@@ -26,7 +26,6 @@ module Suppository
     def full_attr
       full_attrs = @attr
       full_attrs['Size'] = size
-      full_attrs['Filename'] = filename
       full_attrs['MD5Sum'] = @md5sum
       full_attrs['SHA1'] = @sha1
       full_attrs['SHA256'] = @sha256

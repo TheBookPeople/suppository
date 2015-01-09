@@ -67,6 +67,32 @@ and run the appropriate tests. See https://github.com/guard/guard for more infor
 
 This will run all the tests and then create a gem file. NOTE: Only files tracked by Git will be included in the gem.
 
+### Release
+
+Check everything build and the tests pass
+
+    $ bundle exec build
+
+Create release using GitFlow (http://danielkummer.github.io/git-flow-cheatsheet/)
+
+    $ git flow release start [version]
+
+Update the version number and commit changes
+
+    $ vi lib/suppository/version.rb
+
+Finish release
+
+    $ git flow release finish [version]
+
+Push changes
+
+    $ git push
+    $ git checkout develop
+	$ git push
+    $ git push --tags
+
+Travis will now build and deploy to RubyGems.org
 
 ## Contributing
 

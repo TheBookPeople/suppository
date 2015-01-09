@@ -18,4 +18,3 @@ deploy:
     ruby: 2.0.0
     tags: true
     repo: TheBookPeople/suppository
-    all_branches: true

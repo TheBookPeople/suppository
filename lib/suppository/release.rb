@@ -1,5 +1,3 @@
-require 'English'
-
 require 'suppository/exceptions'
 require 'suppository/command_runner'
 require 'fileutils'
@@ -14,31 +12,27 @@ module Suppository
     end
 
     def create
-      open(@release_file, 'w') { |f| f.puts content }
+      write_file
       sign unless @unsigned
     end
 
     private
 
-    def sign
-      gpg_file = "#{@release_file}.gpg"
-      FileUtils.rm_rf(gpg_file)
-      CommandRunner.new('gpg', "-abs -o #{gpg_file} #{@release_file}").run
+    def write_file
+      open(@release_file, 'w') { |f| f.puts content }
     end
 
     # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
     def content
       result = "Codename: #{@dist}\n"
-      component_dirs = Dir.glob("#{@dist_path}/*").select { |f| File.directory? f }
-      components = component_dirs.collect { |d| File.basename(d) }.join(' ')
-      arch_dirs = Dir.glob("#{@dist_path}/*/*").select { |f| File.directory? f }
-      architectures = arch_dirs.collect { |d| File.basename(d).split('-')[1] }
-                      .uniq.join(' ')
       result << "Architectures: #{architectures}\n"
       result << "Components: #{components}\n"
-      result << "Date: #{Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')}\n"
-      packages = Dir.glob("#{@dist_path}/*/*/Packages*")
-      result << "MD5Sum:\n"
+      result << "Date: #{date}\n"
+      result << package_hashes
+    end
+
+    def package_hashes
+      result = "MD5Sum:\n"
       packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
       result << "SHA1:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
@@ -49,9 +43,33 @@ module Suppository
       result
     end
 
+    def sign
+      gpg_file = "#{@release_file}.gpg"
+      FileUtils.rm_rf(gpg_file)
+      CommandRunner.new('gpg', "-abs -o #{gpg_file} #{@release_file}").run
+    end
+
+    def packages
+      @packages ||= Dir.glob("#{@dist_path}/*/*/Packages*")
+    end
+
     def puts_hash(f, hash)
       relative = f.split(@dist_path).pop[1..-1]
       sprintf(" %s %17d %s\n", hash, File.size(f), relative)
+    end
+
+    def date
+      Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')
+    end
+
+    def components
+      component_dirs = Dir.glob("#{@dist_path}/*").select { |f| File.directory? f }
+      component_dirs.collect { |d| File.basename(d) }.join(' ')
+    end
+
+    def architectures
+      arch_dirs = Dir.glob("#{@dist_path}/*/*").select { |f| File.directory? f }
+      arch_dirs.collect { |d| File.basename(d).split('-')[1] }.uniq.join(' ')
     end
   end
 end

@@ -1,4 +1,4 @@
-
+require 'English'
 require 'suppository/exceptions'
 
 module Suppository

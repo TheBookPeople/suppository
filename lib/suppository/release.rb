@@ -22,7 +22,6 @@ module Suppository
       open(@release_file, 'w') { |f| f.puts content }
     end
 
-    # rubocop:disable Metrics/AbcSize
     def content
       result = "Codename: #{@dist}\n"
       result << "Architectures: #{architectures}\n"
@@ -32,13 +31,32 @@ module Suppository
     end
 
     def package_hashes
+      result = md5_hashes
+      result << sha1_hashes
+      result << sha2_hashes
+      result << sha5_hashes
+    end
+
+    def md5_hashes
       result = "MD5Sum:\n"
       packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
-      result << "SHA1:\n"
+      result
+    end
+
+    def sha1_hashes
+      result = "SHA1:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
-      result << "SHA256:\n"
+      result
+    end
+
+    def sha2_hashes
+      result = "SHA256:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA256.file(f)) }
-      result << "SHA512:\n"
+      result
+    end
+
+    def sha5_hashes
+      result = "SHA512:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA512.file(f)) }
       result
     end
@@ -63,13 +81,16 @@ module Suppository
     end
 
     def components
-      component_dirs = Dir.glob("#{@dist_path}/*").select { |f| File.directory? f }
-      component_dirs.collect { |d| File.basename(d) }.join(' ')
+      directories("#{@dist_path}/*").join(' ')
     end
 
     def architectures
-      arch_dirs = Dir.glob("#{@dist_path}/*/*").select { |f| File.directory? f }
-      arch_dirs.collect { |d| File.basename(d).split('-')[1] }.uniq.join(' ')
+      directories("#{@dist_path}/*/*").collect { |d| d.split('-')[1] }.uniq.join(' ')
+    end
+
+    def directories(path_pattern)
+      directories = Dir.glob(path_pattern).select { |f| File.directory? f }
+      directories.collect { |d| File.basename(d) }
     end
   end
 end

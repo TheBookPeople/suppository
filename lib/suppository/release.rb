@@ -22,7 +22,7 @@ module Suppository
       open(@release_file, 'w') { |f| f.puts content }
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
+    # rubocop:disable Metrics/AbcSize
     def content
       result = "Codename: #{@dist}\n"
       result << "Architectures: #{architectures}\n"

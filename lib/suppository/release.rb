@@ -1,5 +1,3 @@
-require 'English'
-
 require 'suppository/exceptions'
 require 'suppository/command_runner'
 require 'fileutils'
@@ -14,11 +12,54 @@ module Suppository
     end
 
     def create
-      open(@release_file, 'w') { |f| f.puts content }
+      write_file
       sign unless @unsigned
     end
 
     private
+
+    def write_file
+      open(@release_file, 'w') { |f| f.puts content }
+    end
+
+    def content
+      result = "Codename: #{@dist}\n"
+      result << "Architectures: #{architectures}\n"
+      result << "Components: #{components}\n"
+      result << "Date: #{date}\n"
+      result << package_hashes
+    end
+
+    def package_hashes
+      result = md5_hashes
+      result << sha1_hashes
+      result << sha2_hashes
+      result << sha5_hashes
+    end
+
+    def md5_hashes
+      result = "MD5Sum:\n"
+      packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
+      result
+    end
+
+    def sha1_hashes
+      result = "SHA1:\n"
+      packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
+      result
+    end
+
+    def sha2_hashes
+      result = "SHA256:\n"
+      packages.each { |f| result << puts_hash(f, Digest::SHA256.file(f)) }
+      result
+    end
+
+    def sha5_hashes
+      result = "SHA512:\n"
+      packages.each { |f| result << puts_hash(f, Digest::SHA512.file(f)) }
+      result
+    end
 
     def sign
       gpg_file = "#{@release_file}.gpg"
@@ -26,32 +67,30 @@ module Suppository
       CommandRunner.new('gpg', "-abs -o #{gpg_file} #{@release_file}").run
     end
 
-    # rubocop:disable Metrics/MethodLength, Metrics/AbcSize
-    def content
-      result = "Codename: #{@dist}\n"
-      component_dirs = Dir.glob("#{@dist_path}/*").select { |f| File.directory? f }
-      components = component_dirs.collect { |d| File.basename(d) }.join(' ')
-      arch_dirs = Dir.glob("#{@dist_path}/*/*").select { |f| File.directory? f }
-      architectures = arch_dirs.collect { |d| File.basename(d).split('-')[1] }
-                      .uniq.join(' ')
-      result << "Architectures: #{architectures}\n"
-      result << "Components: #{components}\n"
-      result << "Date: #{Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')}\n"
-      packages = Dir.glob("#{@dist_path}/*/*/Packages*")
-      result << "MD5Sum:\n"
-      packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
-      result << "SHA1:\n"
-      packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
-      result << "SHA256:\n"
-      packages.each { |f| result << puts_hash(f, Digest::SHA256.file(f)) }
-      result << "SHA512:\n"
-      packages.each { |f| result << puts_hash(f, Digest::SHA512.file(f)) }
-      result
+    def packages
+      @packages ||= Dir.glob("#{@dist_path}/*/*/Packages*")
     end
 
     def puts_hash(f, hash)
       relative = f.split(@dist_path).pop[1..-1]
       sprintf(" %s %17d %s\n", hash, File.size(f), relative)
+    end
+
+    def date
+      Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')
+    end
+
+    def components
+      directories("#{@dist_path}/*").join(' ')
+    end
+
+    def architectures
+      directories("#{@dist_path}/*/*").collect { |d| d.split('-')[1] }.uniq.join(' ')
+    end
+
+    def directories(path_pattern)
+      directories = Dir.glob(path_pattern).select { |f| File.directory? f }
+      directories.collect { |d| File.basename(d) }
     end
   end
 end

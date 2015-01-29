@@ -72,16 +72,25 @@ module Suppository
     def create_dist_file(master_file, deb)
       @repository.archs.each do |arch|
         FileUtils.ln_s master_file, dist_file(arch, deb), force: true
-        update_packages master_file, arch
+        update_packages arch
       end
     end
 
-    def update_packages(master_file, arch)
-      deb = Suppository::MasterDeb.new(master_file)
+    def update_packages(arch)
       file = package_file(arch)
-      package_info = Suppository::Package.new(internal_path(arch), deb).content
-      open(file, 'a') { |f| f.puts package_info }
+      FileUtils.rm(file)
+      FileUtils.rm("#{file}.gz")
+      Dir.glob("#{component_path}/binary-#{arch}/*deb").each do |deb_link|
+        update_package(deb_link, arch)
+      end
       Suppository::Gzip.compress file
+    end
+
+    def update_package(deb_link, arch)
+      master_file = File.symlink?(deb_link) ? File.readlink(deb_link) : deb_link
+      deb = Suppository::MasterDeb.new(master_file)
+      package_info = Suppository::Package.new(internal_path(arch), deb).content
+      open(package_file(arch), 'a') { |f| f.puts package_info }
     end
 
     def dist_file(arch, deb)

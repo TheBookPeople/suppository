@@ -68,7 +68,7 @@ module Suppository
     end
 
     def packages
-      @packages ||= Dir.glob("#{@dist_path}/*/*/Packages*")
+      @packages ||= Dir.glob("#{@dist_path}/*/*/Packages*").sort
     end
 
     def puts_hash(f, hash)
@@ -85,7 +85,7 @@ module Suppository
     end
 
     def architectures
-      directories("#{@dist_path}/*/*").collect { |d| d.split('-')[1] }.uniq.join(' ')
+      directories("#{@dist_path}/*/*").collect { |d| d.split('-')[1] }.uniq.sort.join(' ')
     end
 
     def directories(path_pattern)

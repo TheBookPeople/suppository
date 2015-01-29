@@ -71,7 +71,7 @@ This will run all the tests and then create a gem file. NOTE: Only files tracked
 
 Check everything build and the tests pass
 
-    $ bundle exec build
+    $ bundle exec rake build
 
 Create release using GitFlow (http://danielkummer.github.io/git-flow-cheatsheet/)
 

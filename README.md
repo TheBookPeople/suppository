@@ -1,5 +1,5 @@
 # Super Simple Apt Repository
-[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository) [![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) 
+[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository) [![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Gem Version](https://badge.fury.io/rb/suppository.svg)](http://badge.fury.io/rb/suppository)
 
 Based on the ideas from Super Simple Apt Repository https://github.com/lukepfarrar/suppository.
 
@@ -71,7 +71,7 @@ This will run all the tests and then create a gem file. NOTE: Only files tracked
 
 Check everything build and the tests pass
 
-    $ bundle exec build
+    $ bundle exec rake build
 
 Create release using GitFlow (http://danielkummer.github.io/git-flow-cheatsheet/)
 

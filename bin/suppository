@@ -5,16 +5,16 @@ require_relative '../lib/suppository/cli'
 require_relative '../lib/suppository/logger'
 require_relative '../lib/suppository/help'
 
-std_trap = trap("INT") { exit! 130 } # no backtrace thanks
+std_trap = trap('INT') { exit! 130 } # no backtrace thanks
 
 begin
-  trap("INT", std_trap) # restore default CTRL-C handler
+  trap('INT', std_trap) # restore default CTRL-C handler
   Suppository::CLI.run(ARGV)
 rescue UsageError
-  Suppository::Logger.log_error "Invalid usage"
+  Suppository::Logger.log_error 'Invalid usage'
   abort Suppository.help
 rescue SystemExit
-  puts "Kernel.exit" if ARGV.verbose?
+  puts 'Kernel.exit' if ARGV.verbose?
   raise
 rescue Interrupt => e
   puts # seemingly a newline is typical
@@ -30,7 +30,3 @@ rescue Exception => e
   puts e.backtrace
   exit 1
 end
-
-
-
-

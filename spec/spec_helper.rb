@@ -16,11 +16,11 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 RSpec.configure do |config|
   config.before do
-    #    $stdout = StringIO.new
+    $stdout = StringIO.new
   end
 
   config.after(:all) do
-    #   $stdout = STDOUT
+    $stdout = STDOUT
   end
 
   config.filter_run focus: true

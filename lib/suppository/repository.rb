@@ -4,8 +4,8 @@ module Suppository
 
     def initialize(path)
       @path = File.expand_path(path)
-      @dists = %w(natty lucid precise saucy trusty)
-      @archs = %w(amd64 i386)
+      @dists = %w(natty lucid precise saucy trusty).sort
+      @archs = %w(amd64 i386).sort
       @suppository = "#{@path}/.suppository"
     end
 

@@ -3,28 +3,27 @@ require 'fakefs/spec_helpers'
 require 'rspec/mocks/standalone'
 require 'stringio'
 require 'simplecov'
-require "codeclimate-test-reporter"
+require 'codeclimate-test-reporter'
 CodeClimate::TestReporter.start
 
 SimpleCov.start do
   SimpleCov.minimum_coverage 100
-  SimpleCov.add_filter "/spec/"
+  SimpleCov.add_filter '/spec/'
 end
 
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-RSpec.configure do |config| 
-  
+RSpec.configure do |config|
   config.before do
-    $stdout = StringIO.new
+    #    $stdout = StringIO.new
   end
 
   config.after(:all) do
-    $stdout = STDOUT
+    #   $stdout = STDOUT
   end
-   
-  config.filter_run :focus => true
+
+  config.filter_run focus: true
   config.run_all_when_everything_filtered = true
   config.color = true
   config.mock_with :rspec
@@ -32,24 +31,20 @@ RSpec.configure do |config|
   config.raise_errors_for_deprecations!
 end
 
- 
-def get_exception 
-  e_message = ""
-  begin      
+def get_exception
+  e_message = ''
+  begin
     yield
   rescue => e
     e_message = e.message
-  end 
+  end
   e_message
 end
 
 def deb_file
-  File.expand_path(File.dirname(__FILE__)+"../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb")
+  File.expand_path(File.dirname(__FILE__) + '../../fixtures/curl_7.22.0-3ubuntu4.11_amd64.deb')
 end
 
 def deb_file_glob
-  File.expand_path(File.dirname(__FILE__)+"../../fixtures/*.deb")
+  File.expand_path(File.dirname(__FILE__) + '../../fixtures/*.deb')
 end
-
-
-

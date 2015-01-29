@@ -7,29 +7,29 @@ describe Suppository::Release do
 
 RELEASE_CONTENT = <<-EOS
 Codename: lucid
-Architectures: i386 amd64
+Architectures: amd64 i386
 Components: internal
 Date: [A-Za-z]{3}, [0-9]{2} [A-Za-z]{3} [0-9]{4} [0-9]{2}:[0-9]{2}:[0-9]{2} [A-Z]{3}
 MD5Sum:
- [a-f0-9]{32}[ 0-9]{18,18} internal/binary-i386/Packages
- [a-f0-9]{32}[ 0-9]{18,18} internal/binary-i386/Packages.gz
  [a-f0-9]{32}[ 0-9]{18,18} internal/binary-amd64/Packages
  [a-f0-9]{32}[ 0-9]{18,18} internal/binary-amd64/Packages.gz
+ [a-f0-9]{32}[ 0-9]{18,18} internal/binary-i386/Packages
+ [a-f0-9]{32}[ 0-9]{18,18} internal/binary-i386/Packages.gz
 SHA1:
- [a-f0-9]{40}[ 0-9]{18,18} internal/binary-i386/Packages
- [a-f0-9]{40}[ 0-9]{18,18} internal/binary-i386/Packages.gz
  [a-f0-9]{40}[ 0-9]{18,18} internal/binary-amd64/Packages
  [a-f0-9]{40}[ 0-9]{18,18} internal/binary-amd64/Packages.gz
+ [a-f0-9]{40}[ 0-9]{18,18} internal/binary-i386/Packages
+ [a-f0-9]{40}[ 0-9]{18,18} internal/binary-i386/Packages.gz
 SHA256:
- [a-f0-9]{64}[ 0-9]{18,18} internal/binary-i386/Packages
- [a-f0-9]{64}[ 0-9]{18,18} internal/binary-i386/Packages.gz
  [a-f0-9]{64}[ 0-9]{18,18} internal/binary-amd64/Packages
  [a-f0-9]{64}[ 0-9]{18,18} internal/binary-amd64/Packages.gz
+ [a-f0-9]{64}[ 0-9]{18,18} internal/binary-i386/Packages
+ [a-f0-9]{64}[ 0-9]{18,18} internal/binary-i386/Packages.gz
 SHA512:
- [a-f0-9]{128}[ 0-9]{18,18} internal/binary-i386/Packages
- [a-f0-9]{128}[ 0-9]{18,18} internal/binary-i386/Packages.gz
  [a-f0-9]{128}[ 0-9]{18,18} internal/binary-amd64/Packages
  [a-f0-9]{128}[ 0-9]{18,18} internal/binary-amd64/Packages.gz
+ [a-f0-9]{128}[ 0-9]{18,18} internal/binary-i386/Packages
+ [a-f0-9]{128}[ 0-9]{18,18} internal/binary-i386/Packages.gz
 EOS
   
   
@@ -49,6 +49,7 @@ EOS
   it "has correct content" do 
      @instance.create
      content = File.read(@release_file)
+     puts content
      expect(Regexp.new(RELEASE_CONTENT).match content ).to be_truthy
   end
   

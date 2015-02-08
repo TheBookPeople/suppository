@@ -73,7 +73,7 @@ module Suppository
 
     def puts_hash(f, hash)
       relative = f.split(@dist_path).pop[1..-1]
-      sprintf(" %s %17d %s\n", hash, File.size(f), relative)
+      format(" %s %17d %s\n", hash, File.size(f), relative)
     end
 
     def date

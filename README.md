@@ -1,5 +1,5 @@
 # Super Simple Apt Repository
-[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository) [![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Gem Version](https://badge.fury.io/rb/suppository.svg)](http://badge.fury.io/rb/suppository)
+[![Build Status](https://travis-ci.org/TheBookPeople/suppository.svg?branch=develop)](https://travis-ci.org/TheBookPeople/suppository) [![Code Climate](https://codeclimate.com/github/TheBookPeople/suppository/badges/gpa.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Test Coverage](https://codeclimate.com/github/TheBookPeople/suppository/badges/coverage.svg)](https://codeclimate.com/github/TheBookPeople/suppository) [![Gem Version](https://badge.fury.io/rb/suppository.svg)](http://badge.fury.io/rb/suppository) [![Gem Dependency](https://img.shields.io/gemnasium/TheBookPeople/suppository.svg)
 
 Based on the ideas from Super Simple Apt Repository https://github.com/lukepfarrar/suppository.
 

@@ -25,6 +25,7 @@ module Suppository
       assert_repository_exists
       assert_dist_exists
       assert_component_exists
+      assert_debs_exist
 
       @debs.each { |deb| add_deb Suppository::Checksummed.new(deb) }
 
@@ -45,6 +46,12 @@ module Suppository
       f = File.basename(deb.path)
       message = "#{f} added to repository #{@repository.path}, #{@dist} #{@component}"
       log_success message
+    end
+
+    def assert_debs_exist
+      @debs.each do |deb|
+        fail MissingFile, deb unless File.exist?(deb)
+      end
     end
 
     def assert_repository_exists

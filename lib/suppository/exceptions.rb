@@ -4,6 +4,9 @@ end
 class InvalidDistribution < RuntimeError
 end
 
+class MissingFile < RuntimeError
+end
+
 class InvalidComponent < RuntimeError
 end
 

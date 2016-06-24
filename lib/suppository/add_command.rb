@@ -49,9 +49,7 @@ module Suppository
     end
 
     def assert_debs_exist
-      @debs.each do |deb|
-        fail MissingFile, deb unless File.exist?(deb)
-      end
+      fail MissingFile, 'No valid *.deb has been provided.' if @debs.empty?
     end
 
     def assert_repository_exists

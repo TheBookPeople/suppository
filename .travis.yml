@@ -1,19 +1,21 @@
 language: ruby
 sudo: false
 rvm:
-- 1.9.3
-- 2.0.0
 - 2.1.5
 - 2.2.0
+- 2.3.0
+- 2.4.0
 addons:
   code_climate:
     repo_token:
       secure: GJm/TrjSneaH39Q+pI0awm5rkIjvAqqO8Ob7z6RZ18zu7maACYsL9owQ7Fa8zfC9DALGk2RSUikUdlONM+lTetBjT600PZmtTETpeVaZx8pf6Zn8KIgGsejIPV91cpMaavQbVceuA+NUn3eLWK18FvmYpZzQv+ps7/bkmYx+oTQ=
+after_success:
+  - bundle exec codeclimate-test-reporter
 deploy:
   provider: rubygems
   api_key:
     secure: gE9BoetPOYM2BbhUGZb35UhMoY1Rjv7KUMyMKJ2f5ceQrIp+Qi+rqrRyvt8Fu9EcnLgE1XjB+PxpMKxOeWKYUzVRgQdjpjYU/c+v8bHh7jfblixwum4BhoGaiQkrK+A42we9hTmu4dNALnm5vTMhsN/bPFaRgFB15bk4UYOTZNM=
   gem: suppository
   on:
-    ruby: 2.0.0
+    ruby: 2.4.0
     repo: TheBookPeople/suppository

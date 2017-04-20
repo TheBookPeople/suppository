@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'suppository/exceptions'
 require 'suppository/command_runner'
 require 'fileutils'
@@ -19,11 +21,12 @@ module Suppository
     private
 
     def write_file
-      open(@release_file, 'w') { |f| f.puts content }
+      open(@release_file, 'w') { |f| f.puts content.join("") }
     end
 
     def content
-      result = "Codename: #{@dist}\n"
+      result = []
+      result << "Codename: #{@dist}\n"
       result << "Architectures: #{architectures}\n"
       result << "Components: #{components}\n"
       result << "Date: #{date}\n"
@@ -31,32 +34,37 @@ module Suppository
     end
 
     def package_hashes
-      result = md5_hashes
+      result = []
+      result << md5_hashes
       result << sha1_hashes
       result << sha2_hashes
       result << sha5_hashes
     end
 
     def md5_hashes
-      result = "MD5Sum:\n"
+      result = []
+      result << "MD5Sum:\n"
       packages.each { |f| result << puts_hash(f, Digest::MD5.file(f)) }
       result
     end
 
     def sha1_hashes
-      result = "SHA1:\n"
+      result = []
+      result << "SHA1:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA1.file(f)) }
       result
     end
 
     def sha2_hashes
-      result = "SHA256:\n"
+      result = []
+      result << "SHA256:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA256.file(f)) }
       result
     end
 
     def sha5_hashes
-      result = "SHA512:\n"
+      result = []
+      result << "SHA512:\n"
       packages.each { |f| result << puts_hash(f, Digest::SHA512.file(f)) }
       result
     end
@@ -73,7 +81,7 @@ module Suppository
 
     def puts_hash(f, hash)
       relative = f.split(@dist_path).pop[1..-1]
-      sprintf(" %s %17d %s\n", hash, File.size(f), relative)
+      format(" %s %17d %s\n", hash, File.size(f), relative)
     end
 
     def date

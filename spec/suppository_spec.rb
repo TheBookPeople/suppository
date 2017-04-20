@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/version'
 require 'English'
@@ -51,7 +53,7 @@ describe 'suppository binary' do
   end
 
   describe 'add' do
-    it 'runs without error'  do
+    it 'runs without error' do
       `"#{@cmd}" create #{@repository_path}`
       `"#{@cmd}" add #{@repository_path} trusty internal "#{deb_file}" --unsigned`
       expect($CHILD_STATUS.success?).to be_truthy

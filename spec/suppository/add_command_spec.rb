@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/add_command'
 require 'suppository/repository'
@@ -17,15 +19,15 @@ describe Suppository::AddCommand do
     @component = 'internal'
     @adder = Suppository::AddCommand.new([@repository.path, @dist, @component, deb_file])
   end
-  
+
   after(:each) do
     FileUtils.rm_r @repository.path
   end
-  
-  it "add the same package again" do  
-  	release = double(Suppository::Release)
-	  expect(release).to receive(:create).twice
-	  expect(Suppository::Release).to receive(:new).twice.with(@repository.path, @dist, false) { release }
+
+  it 'add the same package again' do
+    release = double(Suppository::Release)
+    expect(release).to receive(:create).twice
+    expect(Suppository::Release).to receive(:new).twice.with(@repository.path, @dist, false) { release }
     @adder.run
     @adder.run
     expect(File.file?("#{@repository.suppository}/#{@file_name}")).to be_truthy
@@ -85,12 +87,12 @@ describe Suppository::AddCommand do
         packages_path = "#{path}/Packages.gz"
         deb = Suppository::MasterDeb.new(supository_file)
         content = Suppository::Package.new(internal_path, deb).content
-        result = ''
-        Zlib::GzipReader.open(packages_path) do|gz|
+        result = []
+        Zlib::GzipReader.open(packages_path) do |gz|
           result << gz.read
         end
 
-        expect(result).to match content
+        expect(result.join('')).to match content
       end
     end
   end

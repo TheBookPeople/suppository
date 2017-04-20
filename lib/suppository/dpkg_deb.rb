@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'suppository/dpkg_deb_line'
 require 'suppository/command_runner'
 

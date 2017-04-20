@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'suppository/exceptions'
 require 'suppository/dpkg_deb'
 
@@ -40,7 +42,7 @@ module Suppository
 
     def assert_in_suppository
       message = 'Master deb must be in the .suppository folder'
-      fail InvalidMasterDeb, message unless suppository_file?
+      raise InvalidMasterDeb, message unless suppository_file?
     end
 
     def suppository_file?
@@ -51,7 +53,7 @@ module Suppository
       file_name = File.basename(@path)
       matches = filename_regex.match(file_name)
       message = 'Master deb must have the following name {md5}_{sha1}_{sha256}.deb'
-      fail InvalidMasterDeb, message unless matches
+      raise InvalidMasterDeb, message unless matches
       matches
     end
 

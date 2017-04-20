@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 # encoding: UTF-8
+# frozen_string_literal: true
+
 # -*- mode: ruby -*-
 require_relative '../lib/suppository/cli'
 require_relative '../lib/suppository/logger'

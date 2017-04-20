@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Suppository
   class DpkgDebLine
     DESCRIPTION_FIELD = 'Description'
@@ -11,7 +13,7 @@ module Suppository
       elsif field
         @attributes = { field['fieldname'] => field['fieldvalue'] }
       else
-        fail "can't parse line - '#{line}'"
+        raise "can't parse line - '#{line}'"
       end
     end
 

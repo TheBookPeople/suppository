@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/create_command'
 require 'suppository/repository'

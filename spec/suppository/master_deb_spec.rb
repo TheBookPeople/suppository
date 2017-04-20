@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/master_deb'
 require 'suppository/dpkg_deb'
@@ -45,8 +47,8 @@ describe Suppository::MasterDeb do
       exception = nil
       begin
         Suppository::MasterDeb.new(master_deb_file)
-       rescue InvalidMasterDeb => e
-         exception = e
+      rescue InvalidMasterDeb => e
+        exception = e
       end
 
       expect(exception.message).to be_eql 'Master deb must be in the .suppository folder'
@@ -57,8 +59,8 @@ describe Suppository::MasterDeb do
       exception = nil
       begin
         Suppository::MasterDeb.new(master_deb_file)
-       rescue InvalidMasterDeb => e
-         exception = e
+      rescue InvalidMasterDeb => e
+        exception = e
       end
 
       expect(exception.message).to be_eql 'Master deb must have the following name {md5}_{sha1}_{sha256}.deb'

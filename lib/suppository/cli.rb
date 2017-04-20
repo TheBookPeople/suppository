@@ -1,10 +1,12 @@
 
+# frozen_string_literal: true
+
 require 'suppository/exceptions'
 
 module Suppository
   class CLI
     def self.run(args)
-      fail UsageError if args.empty?
+      raise UsageError if args.empty?
       cmd = args.delete_at(0)
 
       begin

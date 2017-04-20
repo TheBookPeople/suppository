@@ -1,12 +1,14 @@
 
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/repository'
 
 describe Suppository::Repository do
   before(:each) do
     @repository = Suppository::Repository.new('/tmp/repo123')
-    @dists = %w(natty lucid precise saucy trusty xenial).sort
-    @archs = %w(amd64 i386).sort
+    @dists = %w[natty lucid precise saucy trusty xenial].sort
+    @archs = %w[amd64 i386].sort
     @suppository = '/tmp/repo123/.suppository'
   end
 

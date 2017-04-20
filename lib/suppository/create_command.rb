@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'fileutils'
 require 'suppository/logger'
 require 'suppository/repository'
@@ -23,7 +25,7 @@ module Suppository
 
     def assert_arguments(args)
       message = 'Create command needs one argument, the path to the new repository'
-      fail UsageError, message if args.nil? || args.length != 1
+      raise UsageError, message if args.nil? || args.length != 1
     end
 
     def repository(path)
@@ -31,11 +33,11 @@ module Suppository
     end
 
     def assert_not_created
-      @repository.exist? ? fail("#{path} is already a repository") : ''
+      @repository.exist? ? raise("#{path} is already a repository") : ''
     end
 
     def create_repository
-      FileUtils.mkdir_p "#{suppository}"
+      FileUtils.mkdir_p suppository.to_s
       create_dists_folders
       log_success "Created new Repository - #{path}"
     end

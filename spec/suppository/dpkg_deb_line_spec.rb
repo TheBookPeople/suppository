@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'suppository/dpkg_deb_line'
 

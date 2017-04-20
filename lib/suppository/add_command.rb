@@ -1,4 +1,6 @@
 
+# frozen_string_literal: true
+
 require 'suppository/master_deb'
 require 'suppository/repository'
 require 'suppository/exceptions'
@@ -35,8 +37,8 @@ module Suppository
     private
 
     def parse_params(args)
-      fail UsageError if args.nil? || args.length < 4 || args.length > 5
-      fail UsageError if args.length == 5 && args[4] != '--unsigned'
+      raise UsageError if args.nil? || args.length < 4 || args.length > 5
+      raise UsageError if args.length == 5 && args[4] != '--unsigned'
       args.length == 5
     end
 
@@ -49,25 +51,26 @@ module Suppository
     end
 
     def assert_debs_exist
-      fail MissingFile, 'No valid *.deb has been provided.' if @debs.empty?
+      raise MissingFile, 'No valid *.deb has been provided.' if @debs.empty?
     end
 
     def assert_repository_exists
-      message = "#{@repository.path} is not a valid repository.\n"
+      message = []
+      message << "#{@repository.path} is not a valid repository.\n"
       message << "You can create a new repository by running the following command\n\n"
       message << "   suppository create #{@repository.path}"
-      fail InvalidRepositoryError, message  unless @repository.exist?
+      raise InvalidRepositoryError, message unless @repository.exist?
     end
 
     def assert_dist_exists
       supported_dist = @repository.dists.join(', ')
       message = "#{@dist} does not exist, try one of the following #{supported_dist}"
-      fail InvalidDistribution, message  unless File.exist?("#{dist_path}")
+      raise InvalidDistribution, message unless File.exist?(dist_path.to_s)
     end
 
     def assert_component_exists
       message = "#{@component} does not exist, try internal instead"
-      fail InvalidComponent, message unless File.exist?("#{component_path}")
+      raise InvalidComponent, message unless File.exist?(component_path.to_s)
     end
 
     def create_suppository_file(deb)

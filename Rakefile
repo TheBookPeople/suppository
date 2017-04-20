@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rake'
 require 'rake/clean'
 require 'rspec/core/rake_task'
@@ -5,10 +7,10 @@ require 'rubocop/rake_task'
 require 'suppository/version'
 
 desc 'Run Code quality checks and tests '
-task default: [:clean, :rubocop, :test]
+task default: %i[clean rubocop test]
 
 desc 'Run Code quality checks, tests and then create Gem File'
-task build: [:clean, :rubocop, :test, :gem]
+task build: %i[clean rubocop test gem]
 
 CLEAN.include("suppository-#{Suppository::VERSION}.gem")
 CLEAN.include('coverage')

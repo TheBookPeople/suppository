@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'English'
 require 'suppository/exceptions'
 
@@ -17,13 +19,13 @@ module Suppository
 
     def assert_exists
       `which "#{@command}"`
-      message =  "'#{@command}' was not found."
-      fail(CommandMissingError, message) unless $CHILD_STATUS.success?
+      message = "'#{@command}' was not found."
+      raise(CommandMissingError, message) unless $CHILD_STATUS.success?
     end
 
     def run_command
       output = `#{@command} #{@arguments} 2>&1`
-      fail(CommandError, output) unless $CHILD_STATUS.success?
+      raise(CommandError, output) unless $CHILD_STATUS.success?
       output
     end
   end

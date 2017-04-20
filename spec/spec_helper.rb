@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'logger'
 require 'fakefs/spec_helpers'
 require 'rspec/mocks/standalone'

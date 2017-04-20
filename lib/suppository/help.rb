@@ -1,6 +1,5 @@
 # frozen_string_literal: true
-
-HELP = <<~EOS
+HELP = <<-EOS
   Example usage:
 
     suppository help

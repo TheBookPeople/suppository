@@ -21,7 +21,7 @@ module Suppository
     private
 
     def write_file
-      open(@release_file, 'w') { |f| f.puts content.join("") }
+      open(@release_file, 'w') { |f| f.puts content.join('') }
     end
 
     def content

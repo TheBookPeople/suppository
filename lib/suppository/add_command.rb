@@ -59,7 +59,7 @@ module Suppository
       message << "#{@repository.path} is not a valid repository.\n"
       message << "You can create a new repository by running the following command\n\n"
       message << "   suppository create #{@repository.path}"
-      raise InvalidRepositoryError, message unless @repository.exist?
+      raise InvalidRepositoryError, message.join('') unless @repository.exist?
     end
 
     def assert_dist_exists

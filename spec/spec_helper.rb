@@ -7,7 +7,6 @@ require 'stringio'
 require 'simplecov'
 require 'codeclimate-test-reporter'
 
-
 SimpleCov.start do
   SimpleCov.minimum_coverage 100
   SimpleCov.add_filter '/spec/'

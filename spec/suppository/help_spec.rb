@@ -5,7 +5,6 @@ require 'spec_helper'
 require 'suppository/help'
 
 describe Suppository do
-
   EXPECTED = <<-EOS
   Example usage:
 

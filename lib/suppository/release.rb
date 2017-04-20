@@ -85,7 +85,7 @@ module Suppository
     end
 
     def date
-      Time.new.strftime('%a, %d %b %Y %H:%M:%S %Z')
+      Time.now.getutc.strftime('%a, %d %b %Y %H:%M:%S %Z')
     end
 
     def components

@@ -17,4 +17,5 @@ deploy:
   gem: suppository
   on:
     ruby: 2.4.1
+    tags: true
     repo: TheBookPeople/suppository
